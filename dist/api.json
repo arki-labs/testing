@@ -1,0 +1,1749 @@
+{
+  "package": "@arki/testing",
+  "version": "0.3.0",
+  "entries": [
+    {
+      "subpath": ".",
+      "name": "assertArrayEmpty",
+      "kind": "function",
+      "signature": "export declare function assertArrayEmpty(array: unknown[], label?: string): void;",
+      "jsdocSummary": "Assert array is empty"
+    },
+    {
+      "subpath": ".",
+      "name": "assertArrayLength",
+      "kind": "function",
+      "signature": "export declare function assertArrayLength(array: unknown[], expectedLength: number, label?: string): void;",
+      "jsdocSummary": "Assert array has expected length"
+    },
+    {
+      "subpath": ".",
+      "name": "assertArrayNotEmpty",
+      "kind": "function",
+      "signature": "export declare function assertArrayNotEmpty(array: unknown[], label?: string): void;",
+      "jsdocSummary": "Assert array is not empty"
+    },
+    {
+      "subpath": ".",
+      "name": "assertArraySorted",
+      "kind": "function",
+      "signature": "export declare function assertArraySorted<T extends object>(array: T[], field: keyof T, order?: 'asc' | 'desc'): void;",
+      "jsdocSummary": "Assert array is sorted by a field"
+    },
+    {
+      "subpath": ".",
+      "name": "assertContainsId",
+      "kind": "function",
+      "signature": "export declare function assertContainsId<T extends { id: unknown; }>(items: T[], id: string): void; ; export declare function assertContainsId<T extends object>(items: T[], id: string, idField: keyof T): void;",
+      "jsdocSummary": "Assert that an array contains an item with the specified ID"
+    },
+    {
+      "subpath": ".",
+      "name": "assertDeepPartialMatch",
+      "kind": "function",
+      "signature": "export declare function assertDeepPartialMatch(actual: unknown, expected: unknown, label?: string, path?: string[]): void;",
+      "jsdocSummary": "Assert object matches partial shape (deep partial match)"
+    },
+    {
+      "subpath": ".",
+      "name": "assertErrorThrown",
+      "kind": "function",
+      "signature": "export declare function assertErrorThrown(callback: () => Promise<unknown>, expectedMessage?: string | RegExp): Promise<Error>;",
+      "jsdocSummary": "Assert that an error was thrown with expected message"
+    },
+    {
+      "subpath": ".",
+      "name": "assertMatchesSchema",
+      "kind": "function",
+      "signature": "export declare function assertMatchesSchema<Schema extends StandardSchemaV1>(value: unknown, schema: Schema, label?: string): asserts value is SchemaInput<Schema>;",
+      "jsdocSummary": "Assert value matches a Standard Schema (zod, valibot, arktype, ...)"
+    },
+    {
+      "subpath": ".",
+      "name": "assertNoError",
+      "kind": "function",
+      "signature": "export declare function assertNoError(callback: () => Promise<unknown>): Promise<void>;",
+      "jsdocSummary": "Assert that an error was NOT thrown"
+    },
+    {
+      "subpath": ".",
+      "name": "assertNotContainsId",
+      "kind": "function",
+      "signature": "export declare function assertNotContainsId<T extends { id: unknown; }>(items: T[], id: string): void; ; export declare function assertNotContainsId<T extends object>(items: T[], id: string, idField: keyof T): void;",
+      "jsdocSummary": "Assert that an array does NOT contain an item with the specified ID"
+    },
+    {
+      "subpath": ".",
+      "name": "assertOneOf",
+      "kind": "function",
+      "signature": "export declare function assertOneOf<T>(value: T, expectedValues: T[], label?: string): void;",
+      "jsdocSummary": "Assert value is one of the expected values"
+    },
+    {
+      "subpath": ".",
+      "name": "assertPaginationValid",
+      "kind": "function",
+      "signature": "export declare function assertPaginationValid(response: unknown, options?: { itemsCount?: number; total?: number; hasMore?: boolean; itemSchema?: StandardSchemaV1; }): asserts response is { items: unknown[]; total?: number; nextCursor?: string | null; hasMore?: boolean; };",
+      "jsdocSummary": "Assert that a pagination response is valid"
+    },
+    {
+      "subpath": ".",
+      "name": "assertPerformance",
+      "kind": "function",
+      "signature": "export declare function assertPerformance<T>(label: string, operation: () => Promise<T>, maxMs: number): Promise<T>;",
+      "jsdocSummary": "Assert that an operation completes within the specified time"
+    },
+    {
+      "subpath": ".",
+      "name": "assertTimestampRecent",
+      "kind": "function",
+      "signature": "export declare function assertTimestampRecent(timestamp: unknown, options?: { withinSeconds?: number; label?: string; }): asserts timestamp is Timestamp;",
+      "jsdocSummary": "Assert that a timestamp is recent (within specified seconds)"
+    },
+    {
+      "subpath": ".",
+      "name": "assertTimestamps",
+      "kind": "function",
+      "signature": "export declare function assertTimestamps(obj: unknown): asserts obj is Timestamps;",
+      "jsdocSummary": "Assert that an object has valid createdAt and updatedAt timestamps."
+    },
+    {
+      "subpath": ".",
+      "name": "assertUpdatedAfterCreated",
+      "kind": "function",
+      "signature": "export declare function assertUpdatedAfterCreated(obj: Timestamps): void;",
+      "jsdocSummary": "Assert that updatedAt is greater than or equal to createdAt."
+    },
+    {
+      "subpath": ".",
+      "name": "benchmarkQuery",
+      "kind": "function",
+      "signature": "export declare function benchmarkQuery<T>(label: string, query: () => Promise<T>, iterations?: number): Promise<{ label: string; iterations: number; totalMs: number; avgMs: number; minMs: number; maxMs: number; p50Ms: number; p95Ms: number; p99Ms: number; durations: number[]; }>;",
+      "jsdocSummary": "Benchmark a query by running it multiple times"
+    },
+    {
+      "subpath": ".",
+      "name": "comparePerformance",
+      "kind": "function",
+      "signature": "export declare function comparePerformance<T extends Record<string, () => Promise<unknown>>>(operations: T, iterations?: number): Promise<{ label: string; avgMs: number; minMs: number; maxMs: number; relativeDiff: string; }[]>;",
+      "jsdocSummary": "Compare the performance of multiple operations"
+    },
+    {
+      "subpath": ".",
+      "name": "configureDebug",
+      "kind": "function",
+      "signature": "export declare function configureDebug(options: DebugOptions): void;",
+      "jsdocSummary": "Configure debug options globally"
+    },
+    {
+      "subpath": ".",
+      "name": "createDebugContext",
+      "kind": "function",
+      "signature": "export declare function createDebugContext(context: string): { log: (message: string, ...args: unknown[]) => void; query: (query: string, params?: readonly unknown[]) => void; state: (label: string, state: unknown) => void; section: (label: string) => void; };",
+      "jsdocSummary": "Create a scoped debug context"
+    },
+    {
+      "subpath": ".",
+      "name": "createFactories",
+      "kind": "function",
+      "signature": "export declare function createFactories<TFactories extends Record<string, Factory<unknown> | Record<string, unknown>>>(factories: TFactories): TFactories;",
+      "jsdocSummary": "Create a typed factory registry with full type inference"
+    },
+    {
+      "subpath": ".",
+      "name": "createFactory",
+      "kind": "function",
+      "signature": "export declare function createFactory<T>(generator: () => T, defaults?: Partial<T>): Factory<T>;",
+      "jsdocSummary": "Create a factory function with dual API support"
+    },
+    {
+      "subpath": ".",
+      "name": "createMany",
+      "kind": "function",
+      "signature": "export declare function createMany<T>(factory: Factory<T>, count: number, overrides?: Partial<T> | ((index: number) => Partial<T>)): T[];",
+      "jsdocSummary": "Create multiple instances from a factory"
+    },
+    {
+      "subpath": ".",
+      "name": "createPerformanceTracker",
+      "kind": "function",
+      "signature": "export declare function createPerformanceTracker(): { measure<T>(label: string, operation: () => Promise<T>, options?: { maxMs?: number; }): Promise<T>; getMeasurements(): PerformanceResult[]; printSummary(): void; clear(): void; };",
+      "jsdocSummary": "Create a performance tracker that can measure multiple operations"
+    },
+    {
+      "subpath": ".",
+      "name": "createSequence",
+      "kind": "function",
+      "signature": "export declare function createSequence<T, K extends keyof T>(factory: Factory<T>, field: K, values: T[K][], baseOverrides?: Partial<T>): T[];",
+      "jsdocSummary": "Create a sequence of instances with specific field values"
+    },
+    {
+      "subpath": ".",
+      "name": "debugContainers",
+      "kind": "variable",
+      "signature": "export declare const debugContainers: import(\"@arki/log\").Logger;",
+      "jsdocSummary": "Runtime debug logger for container operations"
+    },
+    {
+      "subpath": ".",
+      "name": "debugFactories",
+      "kind": "variable",
+      "signature": "export declare const debugFactories: import(\"@arki/log\").Logger;",
+      "jsdocSummary": "Runtime debug logger for factory operations"
+    },
+    {
+      "subpath": ".",
+      "name": "DebugOptions",
+      "kind": "type",
+      "signature": "export type DebugOptions = { /** * Whether debug logging is enabled * @default process.env.DEBUG_TESTS === 'true' */ enabled?: boolean; /** * Function to use for logging * @default console.log */ logger?: (message: string, ...args: unknown[]) => void; };",
+      "jsdocSummary": "Options for debug logging"
+    },
+    {
+      "subpath": ".",
+      "name": "debugTester",
+      "kind": "variable",
+      "signature": "export declare const debugTester: import(\"@arki/log\").Logger;",
+      "jsdocSummary": "Runtime debug logger for main tester operations"
+    },
+    {
+      "subpath": ".",
+      "name": "describeKind",
+      "kind": "function",
+      "signature": "export declare function describeKind(value: unknown): string;",
+      "jsdocSummary": "Name the kind of a value that failed `isTimestamp`, for an error message."
+    },
+    {
+      "subpath": ".",
+      "name": "dumpDatabase",
+      "kind": "function",
+      "signature": "export declare function dumpDatabase<TSchema extends AnyRelations>(db: NodePgDatabase<TSchema>): Promise<void>;",
+      "jsdocSummary": "Dump all tables and their row counts from the database"
+    },
+    {
+      "subpath": ".",
+      "name": "dumpTable",
+      "kind": "function",
+      "signature": "export declare function dumpTable<TSchema extends AnyRelations>(db: NodePgDatabase<TSchema>, tableName: string, limit?: number): Promise<void>;",
+      "jsdocSummary": "Dump specific table contents"
+    },
+    {
+      "subpath": ".",
+      "name": "epochMilliseconds",
+      "kind": "function",
+      "signature": "export declare function epochMilliseconds(value: Timestamp): number;",
+      "jsdocSummary": "The epoch of a timestamp in whole milliseconds, rounded toward the past."
+    },
+    {
+      "subpath": ".",
+      "name": "epochNanoseconds",
+      "kind": "function",
+      "signature": "export declare function epochNanoseconds(value: Timestamp): bigint;",
+      "jsdocSummary": "The exact epoch of a timestamp in nanoseconds, whatever its kind."
+    },
+    {
+      "subpath": ".",
+      "name": "FactoriesOutput",
+      "kind": "type",
+      "signature": "export type FactoriesOutput<T extends Record<string, Factory<unknown>>> = { [K in keyof T]: FactoryOutput<T[K]>; };",
+      "jsdocSummary": "Helper type to extract all factory outputs from a factories object"
+    },
+    {
+      "subpath": ".",
+      "name": "Factory",
+      "kind": "type",
+      "signature": "export type Factory<T> = { /** * Start builder chain (builder pattern) */ (): FactoryBuilder<T>; /** * Create instance with overrides (function pattern) */ (overrides: Partial<T> | undefined): T; };",
+      "jsdocSummary": "Factory function that supports both direct call and builder pattern."
+    },
+    {
+      "subpath": ".",
+      "name": "FactoryBuilder",
+      "kind": "class",
+      "signature": "export declare class FactoryBuilder<T> { private generator; private overrides; constructor(generator: () => T); /** * Set a field value */ with<K extends keyof T>(field: K, value: T[K]): this; /** * Set multiple field values */ withMany(values: Partial<T>): this; /** * Build the final object */ build(): T; }",
+      "jsdocSummary": "Factory builder for creating test data with a fluent API"
+    },
+    {
+      "subpath": ".",
+      "name": "FactoryMap",
+      "kind": "type",
+      "signature": "export type FactoryMap<TOutputs extends object> = { [K in keyof TOutputs]: Factory<TOutputs[K]>; };",
+      "jsdocSummary": "The factories of a registry, keyed by name. `TOutputs` maps each name to what its factory builds."
+    },
+    {
+      "subpath": ".",
+      "name": "FactoryOutput",
+      "kind": "type",
+      "signature": "export type FactoryOutput<T extends Factory<unknown>> = ReturnType<T>;",
+      "jsdocSummary": "Helper type to extract the return type of a factory"
+    },
+    {
+      "subpath": ".",
+      "name": "FactoryRegistry",
+      "kind": "class",
+      "signature": "export declare class FactoryRegistry<TOutputs extends object> { private readonly factories; constructor(factories: FactoryMap<TOutputs>); /** * Check if a factory is registered (narrows an arbitrary string to a registered name) */ has(name: string): name is Extract<keyof TOutputs, string>; /** * Get a registered factory */ get<K extends keyof TOutputs>(name: K): Factory<TOutputs[K]>; /** * Create an instance using a registered factory */ create<K extends keyof TOutputs>(name: K, overrides?: Partial<TOutputs[K]>): TOutputs[K]; /** * Create multiple instances using a registered factory */ createMany<K extends keyof TOutputs>(name: K, count: number, overrides?: Partial<TOutputs[K]> | ((index: number) => Partial<TOutputs[K]>)): TOutputs[K][]; }",
+      "jsdocSummary": "Factory registry: factories looked up by name, with the type of each result known from the name."
+    },
+    {
+      "subpath": ".",
+      "name": "faker",
+      "kind": "variable",
+      "signature": "declare const faker: Faker;",
+      "jsdocSummary": "The faker instance for the `en` locale."
+    },
+    {
+      "subpath": ".",
+      "name": "isDebugEnabled",
+      "kind": "function",
+      "signature": "export declare function isDebugEnabled(): boolean;",
+      "jsdocSummary": "Check if debug logging is enabled"
+    },
+    {
+      "subpath": ".",
+      "name": "isTimestamp",
+      "kind": "function",
+      "signature": "export declare function isTimestamp(value: unknown): value is Timestamp;",
+      "jsdocSummary": "Whether a value is a `Date` (not `Invalid Date`), `Instant` or `ZonedDateTime`."
+    },
+    {
+      "subpath": ".",
+      "name": "logDebug",
+      "kind": "function",
+      "signature": "export declare function logDebug(message: string, ...args: unknown[]): void;",
+      "jsdocSummary": "Log a debug message (only if debug is enabled)"
+    },
+    {
+      "subpath": ".",
+      "name": "logQuery",
+      "kind": "function",
+      "signature": "export declare function logQuery(query: string, params?: readonly unknown[]): void;",
+      "jsdocSummary": "Log SQL query with parameters"
+    },
+    {
+      "subpath": ".",
+      "name": "logSection",
+      "kind": "function",
+      "signature": "export declare function logSection(label: string): void;",
+      "jsdocSummary": "Log the start of a test section"
+    },
+    {
+      "subpath": ".",
+      "name": "logState",
+      "kind": "function",
+      "signature": "export declare function logState(label: string, state: unknown): void;",
+      "jsdocSummary": "Log the current state of an object"
+    },
+    {
+      "subpath": ".",
+      "name": "measurePerformance",
+      "kind": "function",
+      "signature": "export declare function measurePerformance<T>(label: string, operation: () => Promise<T>, options?: { maxMs?: number; logResult?: boolean; }): Promise<PerformanceResult & { result: T; }>;",
+      "jsdocSummary": "Measure the performance of an operation"
+    },
+    {
+      "subpath": ".",
+      "name": "measureQuery",
+      "kind": "function",
+      "signature": "export declare function measureQuery<TSchema extends AnyRelations, T>(db: NodePgDatabase<TSchema>, queryFn: (db: NodePgDatabase<TSchema>) => Promise<T>, label?: string): Promise<{ result: T; durationMs: number; }>;",
+      "jsdocSummary": "Measure database query execution time"
+    },
+    {
+      "subpath": ".",
+      "name": "PerformanceResult",
+      "kind": "type",
+      "signature": "export type PerformanceResult = { /** * Operation label */ label: string; /** * Duration in milliseconds */ durationMs: number; /** * Start timestamp */ startTime: number; /** * End timestamp */ endTime: number; /** * Whether the operation passed the performance threshold */ passed: boolean; /** * Maximum allowed duration (if specified) */ maxMs?: number; };",
+      "jsdocSummary": "Performance measurement result"
+    },
+    {
+      "subpath": ".",
+      "name": "timeOperation",
+      "kind": "function",
+      "signature": "export declare function timeOperation(label: string): { end: () => void; };",
+      "jsdocSummary": "Create a timing tracker for measuring execution time"
+    },
+    {
+      "subpath": ".",
+      "name": "Timestamp",
+      "kind": "type",
+      "signature": "export type Timestamp = Date | Timeline;",
+      "jsdocSummary": "A moment in time: a `Date`, or a Temporal `Instant` or `ZonedDateTime`."
+    },
+    {
+      "subpath": ".",
+      "name": "Timestamps",
+      "kind": "type",
+      "signature": "export type Timestamps = { createdAt: Timestamp; updatedAt: Timestamp; };",
+      "jsdocSummary": "An object with the two timestamps every table row carries."
+    },
+    {
+      "subpath": "./ai",
+      "name": "AiTools",
+      "kind": "type",
+      "signature": "export type AiTools = { readonly judge?: Judge; readonly embedder?: Embedder; };",
+      "jsdocSummary": "What a scorer may use. They come from the stack; a scorer never builds a client."
+    },
+    {
+      "subpath": "./ai",
+      "name": "containsFacts",
+      "kind": "variable",
+      "signature": "export declare const containsFacts: <TOutput extends string = string, TInput = unknown, TExpected = unknown>(facts: FromSample<readonly string[], TOutput, TInput, TExpected>) => Scorer<TOutput, TInput, TExpected>;",
+      "jsdocSummary": "Share of the facts found in the output (compared without case, punctuation or the commas in numbers)."
+    },
+    {
+      "subpath": "./ai",
+      "name": "cosine",
+      "kind": "function",
+      "signature": "export declare function cosine(a: readonly number[], b: readonly number[]): number;",
+      "jsdocSummary": "Cosine similarity of two vectors: 1 for the same direction, 0 for unrelated."
+    },
+    {
+      "subpath": "./ai",
+      "name": "createEmbedder",
+      "kind": "function",
+      "signature": "export declare function createEmbedder(options: { readonly url?: string; readonly model: string; /** How long an embed call may take before it is `OllamaUnavailable`. Default 120 000. */ readonly timeoutMs?: number; }): Promise<Embedder>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./ai",
+      "name": "createJudge",
+      "kind": "function",
+      "signature": "export declare function createJudge(options: JudgeOptions): Promise<Judge>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./ai",
+      "name": "defineScorer",
+      "kind": "variable",
+      "signature": "export declare const defineScorer: <TOutput, TInput = unknown, TExpected = unknown>(scorer: Scorer<TOutput, TInput, TExpected>) => Scorer<TOutput, TInput, TExpected>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./ai",
+      "name": "Embedder",
+      "kind": "type",
+      "signature": "export type Embedder = { readonly model: string; embed(texts: readonly string[]): Promise<readonly (readonly number[])[] | OllamaFailure>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./ai",
+      "name": "FromSample",
+      "kind": "type",
+      "signature": "export type FromSample<TValue extends string | readonly string[], TOutput, TInput, TExpected> = TValue | ((sample: Sample<TOutput, TInput, TExpected>) => TValue);",
+      "jsdocSummary": "A value, or a function of the sample: `grounded({ source: ({ input }) => input.text })`."
+    },
+    {
+      "subpath": "./ai",
+      "name": "grounded",
+      "kind": "variable",
+      "signature": "export declare const grounded: <TOutput extends string = string, TInput = unknown, TExpected = unknown>(options: GroundedOptions<TOutput, TInput, TExpected>) => Scorer<TOutput, TInput, TExpected>;",
+      "jsdocSummary": "Share of the output's claims that the source supports. The judge extracts the claims and a quote for each; code checks that every quote of a supported claim really is in the source, so a judge that invents a quote cannot vouch for a claim. No claims at all is `unscorable`: nothing was checked, which is not the same as nothing being wrong."
+    },
+    {
+      "subpath": "./ai",
+      "name": "GroundedOptions",
+      "kind": "type",
+      "signature": "export type GroundedOptions<TOutput extends string, TInput, TExpected> = { /** The text every claim must come from. */ readonly source: FromSample<string, TOutput, TInput, TExpected>; /** Share of supported claims that passes. Default 0.9. */ readonly atLeast?: number; /** Claims the judge may list. Default 12. */ readonly maxClaims?: number; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./ai",
+      "name": "Judge",
+      "kind": "type",
+      "signature": "export type Judge = { readonly model: string; /** The weights that answered, from Ollama. A report names it so a diff can refuse to compare across judges. */ readonly digest: string; /** A binary verdict on `output` against `rubric`. `reason` is the critique. */ verdict(input: { readonly rubric: string; readonly output: string; readonly input?: string; readonly source?: string; }): Promise<Verdict | OllamaFailure>; /** Structured extraction for scorers where the judge extracts and code decides. */ extract<TOutput>(input: { readonly system: string; readonly prompt: string; readonly schema: SchemaWithJson<unknown, TOutput>; }): Promise<TOutput | OllamaFailure>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./ai",
+      "name": "JudgeOptions",
+      "kind": "type",
+      "signature": "export type JudgeOptions = { /** Default `http://127.0.0.1:11434`. */ readonly url?: string; readonly model: string; /** The model the AI under test runs on. A judge with the same digest is refused. */ readonly target?: string; /** Let the judge be the model under test. It grades its own work more kindly; say so in the test. */ readonly allowSameModelAsJudge?: boolean; /** Default 7. */ readonly seed?: number; /** Tokens the judge may write per call. Default 1500. */ readonly maxTokens?: number; /** How long a chat or embed call may take before it is `OllamaUnavailable`. Default 120 000. */ readonly timeoutMs?: number; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./ai",
+      "name": "OLLAMA_FAILURES",
+      "kind": "variable",
+      "signature": "export declare const OLLAMA_FAILURES: readonly [import(\"@arki/failure\").FailureDefinition<\"testing.ollama_unavailable\", undefined>, import(\"@arki/failure\").FailureDefinition<\"testing.ollama_answer_invalid\", undefined>];",
+      "jsdocSummary": "Every failure a judge or an embedder call returns."
+    },
+    {
+      "subpath": "./ai",
+      "name": "OllamaAnswerInvalid",
+      "kind": "variable",
+      "signature": "export declare const OllamaAnswerInvalid: import(\"@arki/failure\").FailureDefinition<\"testing.ollama_answer_invalid\", undefined>;",
+      "jsdocSummary": "Ollama answered, but not in the shape the call asked for: the chat text is not JSON, it does not match the schema, or the embed answer is not one vector per text."
+    },
+    {
+      "subpath": "./ai",
+      "name": "OllamaFailure",
+      "kind": "type",
+      "signature": "export type OllamaFailure = FailureOf<(typeof OLLAMA_FAILURES)[number]>;",
+      "jsdocSummary": "A failure value returned by a judge or an embedder call."
+    },
+    {
+      "subpath": "./ai",
+      "name": "OllamaUnavailable",
+      "kind": "variable",
+      "signature": "export declare const OllamaUnavailable: import(\"@arki/failure\").FailureDefinition<\"testing.ollama_unavailable\", undefined>;",
+      "jsdocSummary": "Ollama did not answer: it is not running, the call timed out, or it answered with an error status. A scorer turns it into an `unscorable` score, so a missing judge is never read as a pass or a zero."
+    },
+    {
+      "subpath": "./ai",
+      "name": "rubric",
+      "kind": "variable",
+      "signature": "export declare const rubric: <TOutput extends string = string, TInput = unknown, TExpected = unknown>(criterion: FromSample<string, TOutput, TInput, TExpected>) => Scorer<TOutput, TInput, TExpected>;",
+      "jsdocSummary": "One criterion in plain words. The judge answers pass or fail, and its critique is the reason."
+    },
+    {
+      "subpath": "./ai",
+      "name": "Sample",
+      "kind": "type",
+      "signature": "export type Sample<TOutput, TInput = unknown, TExpected = unknown> = { readonly output: TOutput; readonly input: TInput; readonly expected: TExpected; };",
+      "jsdocSummary": "What a scorer judges: the output, and the input and expectation it came with."
+    },
+    {
+      "subpath": "./ai",
+      "name": "Score",
+      "kind": "type",
+      "signature": "export type Score = { readonly name: string; readonly reason: string; } & ({ readonly status: 'scored'; readonly value: number; readonly pass: boolean; readonly details?: Json; } | { readonly status: 'unscorable'; });",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./ai",
+      "name": "scoreMatch",
+      "kind": "function",
+      "signature": "export declare function scoreMatch<TOutput, TInput, TExpected>(output: TOutput, scorer: Scorer<TOutput, TInput, TExpected>, options?: ScoreOptions<TInput, TExpected>): Promise<ScoreMatch>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./ai",
+      "name": "ScoreMatch",
+      "kind": "type",
+      "signature": "export type ScoreMatch = { readonly pass: boolean; readonly score: Score; message(): string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./ai",
+      "name": "ScoreOptions",
+      "kind": "type",
+      "signature": "export type ScoreOptions<TInput = unknown, TExpected = unknown> = AiTools & { readonly input?: TInput; readonly expected?: TExpected; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./ai",
+      "name": "Scorer",
+      "kind": "type",
+      "signature": "export type Scorer<TOutput, TInput = unknown, TExpected = unknown> = { readonly name: string; /** `code` needs no model, `embedding` needs an embedder, `judge` needs a judge model. */ readonly kind: 'code' | 'embedding' | 'judge'; /** Bump when the scorer's logic or prompt changes, so a diff can refuse to compare across versions. */ readonly version?: string; score(sample: Sample<TOutput, TInput, TExpected>, tools: AiTools): Promise<Score>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./ai",
+      "name": "shape",
+      "kind": "variable",
+      "signature": "export declare const shape: <TOutput>(schema: StandardSchemaV1<unknown, TOutput>) => Scorer<unknown>;",
+      "jsdocSummary": "1 when the output satisfies the schema, else 0 with the issues. Works with any Standard Schema."
+    },
+    {
+      "subpath": "./ai",
+      "name": "similarTo",
+      "kind": "variable",
+      "signature": "export declare const similarTo: <TOutput extends string = string, TInput = unknown, TExpected = unknown>(expected: FromSample<string, TOutput, TInput, TExpected>, options: { readonly atLeast: number; }) => Scorer<TOutput, TInput, TExpected>;",
+      "jsdocSummary": "Cosine similarity between the output and a reference, passing at `atLeast`. It measures the gist and the topic only. It cannot tell a fact from its negation or a wrong number, so use `containsFacts` or `grounded` for facts. `atLeast` has no safe default; measure it on your model."
+    },
+    {
+      "subpath": "./ai",
+      "name": "UnscorableError",
+      "kind": "class",
+      "signature": "export declare class UnscorableError extends Error { readonly score: Score; constructor(score: Score); }",
+      "jsdocSummary": "Thrown when a scorer could not score. Never a pass, and not turned into a pass by `.not`."
+    },
+    {
+      "subpath": "./ai",
+      "name": "Verdict",
+      "kind": "type",
+      "signature": "export type Verdict = { readonly pass: boolean; readonly reason: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./ai/playwright",
+      "name": "expect",
+      "kind": "variable",
+      "signature": "export declare const expect: import(\"@playwright/test\").Expect<{ toScore<TOutput, TInput = unknown, TExpected = unknown>(received: TOutput, scorer: Scorer<TOutput, TInput, TExpected>, options?: ScoreOptions<TInput, TExpected>): Promise<{ pass: boolean; message: () => string; name: string; }>; }>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./ai/vitest",
+      "name": "AiExpect",
+      "kind": "type",
+      "signature": "export type AiExpect = Omit<typeof vitestExpect, never> & (<TOutput>(actual: TOutput, message?: string) => ReturnType<typeof vitestExpect<TOutput>> & ScoreAssertion<TOutput>);",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./ai/vitest",
+      "name": "expect",
+      "kind": "variable",
+      "signature": "export declare const expect: AiExpect;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./ai/vitest",
+      "name": "ScoreAssertion",
+      "kind": "type",
+      "signature": "export type ScoreAssertion<TOutput> = { /** Same matcher, negated. A scorer that cannot score still throws: missing evidence is never a pass. */ readonly not: ScoreAssertion<TOutput>; /** Fails when the scorer scores below its bar, and when it cannot score at all. */ toScore<TInput = unknown, TExpected = unknown>(scorer: Scorer<TOutput, TInput, TExpected>, options?: ScoreOptions<TInput, TExpected>): Promise<void>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./assertions",
+      "name": "assertArrayEmpty",
+      "kind": "function",
+      "signature": "export declare function assertArrayEmpty(array: unknown[], label?: string): void;",
+      "jsdocSummary": "Assert array is empty"
+    },
+    {
+      "subpath": "./assertions",
+      "name": "assertArrayLength",
+      "kind": "function",
+      "signature": "export declare function assertArrayLength(array: unknown[], expectedLength: number, label?: string): void;",
+      "jsdocSummary": "Assert array has expected length"
+    },
+    {
+      "subpath": "./assertions",
+      "name": "assertArrayNotEmpty",
+      "kind": "function",
+      "signature": "export declare function assertArrayNotEmpty(array: unknown[], label?: string): void;",
+      "jsdocSummary": "Assert array is not empty"
+    },
+    {
+      "subpath": "./assertions",
+      "name": "assertArraySorted",
+      "kind": "function",
+      "signature": "export declare function assertArraySorted<T extends object>(array: T[], field: keyof T, order?: 'asc' | 'desc'): void;",
+      "jsdocSummary": "Assert array is sorted by a field"
+    },
+    {
+      "subpath": "./assertions",
+      "name": "assertContainsId",
+      "kind": "function",
+      "signature": "export declare function assertContainsId<T extends { id: unknown; }>(items: T[], id: string): void; ; export declare function assertContainsId<T extends object>(items: T[], id: string, idField: keyof T): void;",
+      "jsdocSummary": "Assert that an array contains an item with the specified ID"
+    },
+    {
+      "subpath": "./assertions",
+      "name": "assertDeepPartialMatch",
+      "kind": "function",
+      "signature": "export declare function assertDeepPartialMatch(actual: unknown, expected: unknown, label?: string, path?: string[]): void;",
+      "jsdocSummary": "Assert object matches partial shape (deep partial match)"
+    },
+    {
+      "subpath": "./assertions",
+      "name": "assertErrorThrown",
+      "kind": "function",
+      "signature": "export declare function assertErrorThrown(callback: () => Promise<unknown>, expectedMessage?: string | RegExp): Promise<Error>;",
+      "jsdocSummary": "Assert that an error was thrown with expected message"
+    },
+    {
+      "subpath": "./assertions",
+      "name": "assertMatchesSchema",
+      "kind": "function",
+      "signature": "export declare function assertMatchesSchema<Schema extends StandardSchemaV1>(value: unknown, schema: Schema, label?: string): asserts value is SchemaInput<Schema>;",
+      "jsdocSummary": "Assert value matches a Standard Schema (zod, valibot, arktype, ...)"
+    },
+    {
+      "subpath": "./assertions",
+      "name": "assertNoError",
+      "kind": "function",
+      "signature": "export declare function assertNoError(callback: () => Promise<unknown>): Promise<void>;",
+      "jsdocSummary": "Assert that an error was NOT thrown"
+    },
+    {
+      "subpath": "./assertions",
+      "name": "assertNotContainsId",
+      "kind": "function",
+      "signature": "export declare function assertNotContainsId<T extends { id: unknown; }>(items: T[], id: string): void; ; export declare function assertNotContainsId<T extends object>(items: T[], id: string, idField: keyof T): void;",
+      "jsdocSummary": "Assert that an array does NOT contain an item with the specified ID"
+    },
+    {
+      "subpath": "./assertions",
+      "name": "assertOneOf",
+      "kind": "function",
+      "signature": "export declare function assertOneOf<T>(value: T, expectedValues: T[], label?: string): void;",
+      "jsdocSummary": "Assert value is one of the expected values"
+    },
+    {
+      "subpath": "./assertions",
+      "name": "assertPaginationValid",
+      "kind": "function",
+      "signature": "export declare function assertPaginationValid(response: unknown, options?: { itemsCount?: number; total?: number; hasMore?: boolean; itemSchema?: StandardSchemaV1; }): asserts response is { items: unknown[]; total?: number; nextCursor?: string | null; hasMore?: boolean; };",
+      "jsdocSummary": "Assert that a pagination response is valid"
+    },
+    {
+      "subpath": "./assertions",
+      "name": "assertTimestampRecent",
+      "kind": "function",
+      "signature": "export declare function assertTimestampRecent(timestamp: unknown, options?: { withinSeconds?: number; label?: string; }): asserts timestamp is Timestamp;",
+      "jsdocSummary": "Assert that a timestamp is recent (within specified seconds)"
+    },
+    {
+      "subpath": "./containers",
+      "name": "getGlobalPostgresConnectionString",
+      "kind": "function",
+      "signature": "export declare function getGlobalPostgresConnectionString(): string | undefined;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers",
+      "name": "getGlobalRedisConnectionString",
+      "kind": "function",
+      "signature": "export declare function getGlobalRedisConnectionString(): string | undefined;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers",
+      "name": "POSTGRES_GLOBAL_KEY",
+      "kind": "variable",
+      "signature": "export declare const POSTGRES_GLOBAL_KEY = \"__POSTGRES_CONNECTION_STRING__\";",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers",
+      "name": "REDIS_GLOBAL_KEY",
+      "kind": "variable",
+      "signature": "export declare const REDIS_GLOBAL_KEY = \"__REDIS_CONNECTION_STRING__\";",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers",
+      "name": "setupGlobalTestContainers",
+      "kind": "function",
+      "signature": "export declare function setupGlobalTestContainers(options?: SharedContainerOptions): Promise<void>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers",
+      "name": "SharedContainerOptions",
+      "kind": "type",
+      "signature": "export type SharedContainerOptions = { postgresImage?: string; redisImage?: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers",
+      "name": "startPostgresContainer",
+      "kind": "function",
+      "signature": "export declare function startPostgresContainer(image?: string): Promise<StartedPostgreSqlContainer>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers",
+      "name": "startRedisContainer",
+      "kind": "function",
+      "signature": "export declare function startRedisContainer(image?: string): Promise<StartedTestContainer>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers",
+      "name": "teardownGlobalTestContainers",
+      "kind": "function",
+      "signature": "export declare function teardownGlobalTestContainers(): Promise<void>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./debug",
+      "name": "configureDebug",
+      "kind": "function",
+      "signature": "export declare function configureDebug(options: DebugOptions): void;",
+      "jsdocSummary": "Configure debug options globally"
+    },
+    {
+      "subpath": "./debug",
+      "name": "createDebugContext",
+      "kind": "function",
+      "signature": "export declare function createDebugContext(context: string): { log: (message: string, ...args: unknown[]) => void; query: (query: string, params?: readonly unknown[]) => void; state: (label: string, state: unknown) => void; section: (label: string) => void; };",
+      "jsdocSummary": "Create a scoped debug context"
+    },
+    {
+      "subpath": "./debug",
+      "name": "debugContainers",
+      "kind": "variable",
+      "signature": "export declare const debugContainers: import(\"@arki/log\").Logger;",
+      "jsdocSummary": "Runtime debug logger for container operations"
+    },
+    {
+      "subpath": "./debug",
+      "name": "debugFactories",
+      "kind": "variable",
+      "signature": "export declare const debugFactories: import(\"@arki/log\").Logger;",
+      "jsdocSummary": "Runtime debug logger for factory operations"
+    },
+    {
+      "subpath": "./debug",
+      "name": "DebugOptions",
+      "kind": "type",
+      "signature": "export type DebugOptions = { /** * Whether debug logging is enabled * @default process.env.DEBUG_TESTS === 'true' */ enabled?: boolean; /** * Function to use for logging * @default console.log */ logger?: (message: string, ...args: unknown[]) => void; };",
+      "jsdocSummary": "Options for debug logging"
+    },
+    {
+      "subpath": "./debug",
+      "name": "debugTester",
+      "kind": "variable",
+      "signature": "export declare const debugTester: import(\"@arki/log\").Logger;",
+      "jsdocSummary": "Runtime debug logger for main tester operations"
+    },
+    {
+      "subpath": "./debug",
+      "name": "dumpDatabase",
+      "kind": "function",
+      "signature": "export declare function dumpDatabase<TSchema extends AnyRelations>(db: NodePgDatabase<TSchema>): Promise<void>;",
+      "jsdocSummary": "Dump all tables and their row counts from the database"
+    },
+    {
+      "subpath": "./debug",
+      "name": "dumpTable",
+      "kind": "function",
+      "signature": "export declare function dumpTable<TSchema extends AnyRelations>(db: NodePgDatabase<TSchema>, tableName: string, limit?: number): Promise<void>;",
+      "jsdocSummary": "Dump specific table contents"
+    },
+    {
+      "subpath": "./debug",
+      "name": "isDebugEnabled",
+      "kind": "function",
+      "signature": "export declare function isDebugEnabled(): boolean;",
+      "jsdocSummary": "Check if debug logging is enabled"
+    },
+    {
+      "subpath": "./debug",
+      "name": "logDebug",
+      "kind": "function",
+      "signature": "export declare function logDebug(message: string, ...args: unknown[]): void;",
+      "jsdocSummary": "Log a debug message (only if debug is enabled)"
+    },
+    {
+      "subpath": "./debug",
+      "name": "logQuery",
+      "kind": "function",
+      "signature": "export declare function logQuery(query: string, params?: readonly unknown[]): void;",
+      "jsdocSummary": "Log SQL query with parameters"
+    },
+    {
+      "subpath": "./debug",
+      "name": "logSection",
+      "kind": "function",
+      "signature": "export declare function logSection(label: string): void;",
+      "jsdocSummary": "Log the start of a test section"
+    },
+    {
+      "subpath": "./debug",
+      "name": "logState",
+      "kind": "function",
+      "signature": "export declare function logState(label: string, state: unknown): void;",
+      "jsdocSummary": "Log the current state of an object"
+    },
+    {
+      "subpath": "./debug",
+      "name": "timeOperation",
+      "kind": "function",
+      "signature": "export declare function timeOperation(label: string): { end: () => void; };",
+      "jsdocSummary": "Create a timing tracker for measuring execution time"
+    },
+    {
+      "subpath": "./e2e",
+      "name": "Actor",
+      "kind": "type",
+      "signature": "export type Actor<TUser> = { readonly email: string; readonly user: TUser; readonly page: Page; readonly mail: { /** Waits for a mail to this actor. */ waitFor(match?: { readonly subject?: string | RegExp; readonly timeoutMs?: number; }): Promise<ReceivedMail>; all(): Promise<readonly MailSummary[]>; clear(): Promise<void>; }; };",
+      "jsdocSummary": "One person in a test: a signed-in browser page and a view of their own mail."
+    },
+    {
+      "subpath": "./e2e",
+      "name": "BootableApp",
+      "kind": "type",
+      "signature": "export type BootableApp<TServices> = { boot(): Promise<{ readonly services: TServices; dispose(): Promise<void>; }>; };",
+      "jsdocSummary": "What a test needs from an app: boot the graph, read its services, dispose it."
+    },
+    {
+      "subpath": "./e2e",
+      "name": "CronRun",
+      "kind": "type",
+      "signature": "export type CronRun = { readonly status: number; readonly body: unknown; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./e2e",
+      "name": "e2eConfig",
+      "kind": "function",
+      "signature": "export declare function e2eConfig(options: E2EConfigOptions): PlaywrightTestConfig;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./e2e",
+      "name": "E2EConfigOptions",
+      "kind": "type",
+      "signature": "export type E2EConfigOptions = { /** Path to the app's `globalSetup` file, which default-exports `stackSetup(stack, ...)`. */ readonly globalSetup: string; /** Policy from `tooling/playwright`, spread under the stack-specific settings. */ readonly policy?: PlaywrightTestConfig; readonly testDir?: string; /** Which files are specs. Default Playwright's `*.spec.ts`. */ readonly testMatch?: PlaywrightTestConfig['testMatch']; /** Time for one test. Default 3 minutes. */ readonly testTimeoutMs?: number; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./e2e",
+      "name": "E2EOptions",
+      "kind": "type",
+      "signature": "export type E2EOptions<M extends E2EServices, TServices, TUser, TFactories> = { readonly stack: Stack<M>; /** A loader, so the app's env is set before its modules read it. */ readonly app: () => Promise<BootableApp<TServices>>; readonly auth: (services: TServices) => TestAuth<TUser>; readonly serve: ServerOptions['serve']; readonly factories: (services: TServices) => TFactories; /** The env name of the cron secret. Default `CRON_SECRET`. */ readonly cronSecretEnv?: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./e2e",
+      "name": "E2EServices",
+      "kind": "type",
+      "signature": "export type E2EServices = Readonly<Record<string, ServiceSpec<Json, Json>>> & { readonly mailpit: ServiceSpec<null, MailpitWorker>; };",
+      "jsdocSummary": "A stack the e2e layer can use: it must have a `mailpit` service."
+    },
+    {
+      "subpath": "./e2e",
+      "name": "e2eTest",
+      "kind": "function",
+      "signature": "export declare function e2eTest<M extends E2EServices, TServices, TUser, TFactories>(options: E2EOptions<M, TServices, TUser, TFactories>): { test: TestType<import(\"@playwright/test\").PlaywrightTestArgs & import(\"@playwright/test\").PlaywrightTestOptions & TestFixtures<TUser, TFactories>, import(\"@playwright/test\").PlaywrightWorkerArgs & import(\"@playwright/test\").PlaywrightWorkerOptions & WorkerFixtures<M, TServices>>; expect: import(\"@playwright/test\").Expect<{ toScore<TOutput, TInput = unknown, TExpected = unknown>(received: TOutput, scorer: import(\"../ai/score.js\").Scorer<TOutput, TInput, TExpected>, options?: import(\"../ai/matcher.js\").ScoreOptions<TInput, TExpected>): Promise<{ pass: boolean; message: () => string; name: string; }>; }>; story: { (id: string, title: string, body: StoryBody<import(\"@playwright/test\").PlaywrightTestArgs & import(\"@playwright/test\").PlaywrightTestOptions & TestFixtures<TUser, TFactories>, import(\"@playwright/test\").PlaywrightWorkerArgs & import(\"@playwright/test\").PlaywrightWorkerOptions & WorkerFixtures<M, TServices>>): void; (id: string, title: string, details: { readonly tag: string; }, body: StoryBody<import(\"@playwright/test\").PlaywrightTestArgs & import(\"@playwright/test\").PlaywrightTestOptions & TestFixtures<TUser, TFactories>, import(\"@playwright/test\").PlaywrightWorkerArgs & import(\"@playwright/test\").PlaywrightWorkerOptions & WorkerFixtures<M, TServices>>): void; }; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./e2e",
+      "name": "ensureBuilt",
+      "kind": "function",
+      "signature": "export declare function ensureBuilt(build: ServerOptions['build']): Promise<boolean>;",
+      "jsdocSummary": "Builds the app unless the sources are unchanged since the last build. Returns whether it built."
+    },
+    {
+      "subpath": "./e2e",
+      "name": "holdRequests",
+      "kind": "function",
+      "signature": "export declare function holdRequests(page: Page, paths: readonly string[]): Promise<RequestHold>;",
+      "jsdocSummary": "Delay the real response of every request whose URL contains one of `paths`, to look at a loading state. The request is only sent to the real server after `release`, so nothing is faked, answered or aborted. Other requests are untouched. Call it before `page.goto`. A hold that is never released ends with the page."
+    },
+    {
+      "subpath": "./e2e",
+      "name": "Isolation",
+      "kind": "type",
+      "signature": "export type Isolation = 'shared' | 'fresh';",
+      "jsdocSummary": "What a test shares with the ones before it on the same worker. `shared` (default): the worker's database, mail and keys as the last test left them. `fresh`: every table emptied, mail and keys flushed before the test starts. Use it for a test that runs work over everything in the database (a global cron), whose outcome would otherwise depend on the tests that ran before it. Set it with `test.use({ isolation: 'fresh' })`."
+    },
+    {
+      "subpath": "./e2e",
+      "name": "RequestHold",
+      "kind": "type",
+      "signature": "export type RequestHold = { /** Resolves once a held request has arrived, so a test knows the page is really waiting. */ readonly arrived: Promise<void>; /** Lets every held request (and every later one) through to the real server. */ release(): Promise<void>; };",
+      "jsdocSummary": "A hold on requests to the app: they wait at the browser until `release`, then go to the real server."
+    },
+    {
+      "subpath": "./e2e",
+      "name": "SERVER_ROOT_ENV_KEY",
+      "kind": "variable",
+      "signature": "export declare const SERVER_ROOT_ENV_KEY = \"ARKI_SERVER_ROOT\";",
+      "jsdocSummary": "The env name of the folder this run's servers start in. Read it where `serve.cwd` is written."
+    },
+    {
+      "subpath": "./e2e",
+      "name": "ServerOptions",
+      "kind": "type",
+      "signature": "export type ServerOptions = { readonly build: { /** For example `['bun', 'run', 'build']`. */ readonly command: readonly [string, ...string[]]; readonly cwd: string; /** Files and folders whose change means the build is stale. */ readonly inputs: readonly string[]; /** A file the build writes; the build is skipped when it is newer than the inputs' hash. */ readonly output: string; }; readonly serve: { /** For example `['bun', '.output/server/index.mjs']`. */ readonly command: readonly [string, ...string[]]; readonly cwd: string; /** A path that answers 200 once the server is ready. */ readonly readyPath: string; }; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./e2e",
+      "name": "stackSetup",
+      "kind": "function",
+      "signature": "export declare function stackSetup<M extends ServiceMap>(stack: Stack<M>, options: Pick<ServerOptions, 'build'>): () => Promise<() => Promise<void>>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./e2e",
+      "name": "StoryBody",
+      "kind": "type",
+      "signature": "export type StoryBody<TArgs extends object, WArgs extends object> = (args: TArgs & WArgs, testInfo: TestInfo) => Promise<void> | void;",
+      "jsdocSummary": "What a story body receives from a test built by `e2eTest`, plus whatever the app added with `extend`."
+    },
+    {
+      "subpath": "./e2e",
+      "name": "storyFor",
+      "kind": "function",
+      "signature": "export declare function storyFor<TArgs extends object, WArgs extends object>(test: TestType<TArgs, WArgs>): { (id: string, title: string, body: StoryBody<TArgs, WArgs>): void; (id: string, title: string, details: { readonly tag: string; }, body: StoryBody<TArgs, WArgs>): void; };",
+      "jsdocSummary": "`story(id, title, body)` for any Playwright test, including one an app extended with its own fixtures. The title starts with the id, so the report and the PRD agree."
+    },
+    {
+      "subpath": "./e2e",
+      "name": "TestAuth",
+      "kind": "type",
+      "signature": "export type TestAuth<TUser> = { readonly testing: { signIn(user: { readonly email: string; }): Promise<{ readonly headers: Headers; readonly user: TUser; }>; }; };",
+      "jsdocSummary": "The sign-in seam of `@arki/auth`: a real session, as headers that carry its cookie."
+    },
+    {
+      "subpath": "./factories",
+      "name": "createFactories",
+      "kind": "function",
+      "signature": "export declare function createFactories<TFactories extends Record<string, Factory<unknown> | Record<string, unknown>>>(factories: TFactories): TFactories;",
+      "jsdocSummary": "Create a typed factory registry with full type inference"
+    },
+    {
+      "subpath": "./factories",
+      "name": "createFactory",
+      "kind": "function",
+      "signature": "export declare function createFactory<T>(generator: () => T, defaults?: Partial<T>): Factory<T>;",
+      "jsdocSummary": "Create a factory function with dual API support"
+    },
+    {
+      "subpath": "./factories",
+      "name": "createMany",
+      "kind": "function",
+      "signature": "export declare function createMany<T>(factory: Factory<T>, count: number, overrides?: Partial<T> | ((index: number) => Partial<T>)): T[];",
+      "jsdocSummary": "Create multiple instances from a factory"
+    },
+    {
+      "subpath": "./factories",
+      "name": "createSequence",
+      "kind": "function",
+      "signature": "export declare function createSequence<T, K extends keyof T>(factory: Factory<T>, field: K, values: T[K][], baseOverrides?: Partial<T>): T[];",
+      "jsdocSummary": "Create a sequence of instances with specific field values"
+    },
+    {
+      "subpath": "./factories",
+      "name": "FactoriesOutput",
+      "kind": "type",
+      "signature": "export type FactoriesOutput<T extends Record<string, Factory<unknown>>> = { [K in keyof T]: FactoryOutput<T[K]>; };",
+      "jsdocSummary": "Helper type to extract all factory outputs from a factories object"
+    },
+    {
+      "subpath": "./factories",
+      "name": "Factory",
+      "kind": "type",
+      "signature": "export type Factory<T> = { /** * Start builder chain (builder pattern) */ (): FactoryBuilder<T>; /** * Create instance with overrides (function pattern) */ (overrides: Partial<T> | undefined): T; };",
+      "jsdocSummary": "Factory function that supports both direct call and builder pattern."
+    },
+    {
+      "subpath": "./factories",
+      "name": "FactoryBuilder",
+      "kind": "class",
+      "signature": "export declare class FactoryBuilder<T> { private generator; private overrides; constructor(generator: () => T); /** * Set a field value */ with<K extends keyof T>(field: K, value: T[K]): this; /** * Set multiple field values */ withMany(values: Partial<T>): this; /** * Build the final object */ build(): T; }",
+      "jsdocSummary": "Factory builder for creating test data with a fluent API"
+    },
+    {
+      "subpath": "./factories",
+      "name": "FactoryMap",
+      "kind": "type",
+      "signature": "export type FactoryMap<TOutputs extends object> = { [K in keyof TOutputs]: Factory<TOutputs[K]>; };",
+      "jsdocSummary": "The factories of a registry, keyed by name. `TOutputs` maps each name to what its factory builds."
+    },
+    {
+      "subpath": "./factories",
+      "name": "FactoryOutput",
+      "kind": "type",
+      "signature": "export type FactoryOutput<T extends Factory<unknown>> = ReturnType<T>;",
+      "jsdocSummary": "Helper type to extract the return type of a factory"
+    },
+    {
+      "subpath": "./factories",
+      "name": "FactoryRegistry",
+      "kind": "class",
+      "signature": "export declare class FactoryRegistry<TOutputs extends object> { private readonly factories; constructor(factories: FactoryMap<TOutputs>); /** * Check if a factory is registered (narrows an arbitrary string to a registered name) */ has(name: string): name is Extract<keyof TOutputs, string>; /** * Get a registered factory */ get<K extends keyof TOutputs>(name: K): Factory<TOutputs[K]>; /** * Create an instance using a registered factory */ create<K extends keyof TOutputs>(name: K, overrides?: Partial<TOutputs[K]>): TOutputs[K]; /** * Create multiple instances using a registered factory */ createMany<K extends keyof TOutputs>(name: K, count: number, overrides?: Partial<TOutputs[K]> | ((index: number) => Partial<TOutputs[K]>)): TOutputs[K][]; }",
+      "jsdocSummary": "Factory registry: factories looked up by name, with the type of each result known from the name."
+    },
+    {
+      "subpath": "./factories",
+      "name": "faker",
+      "kind": "variable",
+      "signature": "declare const faker: Faker;",
+      "jsdocSummary": "The faker instance for the `en` locale."
+    },
+    {
+      "subpath": "./msw",
+      "name": "DefaultBodyType",
+      "kind": "type",
+      "signature": "type DefaultBodyType = Record<string, any> | DefaultRequestMultipartBody | string | number | boolean | null | undefined;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./msw",
+      "name": "delay",
+      "kind": "function",
+      "signature": "declare function delay(durationOrMode?: DelayMode | number): Promise<void>;",
+      "jsdocSummary": "Delays the response by the given duration (ms)."
+    },
+    {
+      "subpath": "./msw",
+      "name": "http",
+      "kind": "variable",
+      "signature": "declare const http: { all: HttpRequestHandler; head: HttpRequestHandler; get: HttpRequestHandler; post: HttpRequestHandler; put: HttpRequestHandler; delete: HttpRequestHandler; patch: HttpRequestHandler; options: HttpRequestHandler; };",
+      "jsdocSummary": "A namespace to intercept and mock HTTP requests."
+    },
+    {
+      "subpath": "./msw",
+      "name": "HttpHandler",
+      "kind": "class",
+      "signature": "declare class HttpHandler extends RequestHandler<HttpHandlerInfo, HttpRequestParsedResult, HttpRequestResolverExtras<any>> { constructor(method: HttpHandlerMethod, predicate: HttpRequestPredicate<PathParams>, resolver: ResponseResolver<HttpRequestResolverExtras<any>, any, any>, options?: RequestHandlerOptions); private checkRedundantQueryParameters; parse(args: { request: Request; resolutionContext?: ResponseResolutionContext; }): Promise<{ match: Match; cookies: Record<string, string>; }>; predicate(args: { request: Request; parsedResult: HttpRequestParsedResult; resolutionContext?: ResponseResolutionContext; }): Promise<boolean>; private matchMethod; protected extendResolverArgs(args: { request: Request; parsedResult: HttpRequestParsedResult; }): { params: PathParams<string>; cookies: Record<string, string>; }; log(args: { request: Request; response: Response; }): Promise<void>; }",
+      "jsdocSummary": "Request handler for HTTP requests. Provides request matching based on method and URL."
+    },
+    {
+      "subpath": "./msw",
+      "name": "HttpResponse",
+      "kind": "class",
+      "signature": "declare class HttpResponse<BodyType extends DefaultBodyType> extends FetchResponse { readonly [bodyType]: BodyType; constructor(body?: NoInfer<BodyType> | null, init?: HttpResponseInit); static error(): HttpResponse<any>; /** * Create a `Response` with a `Content-Type: \"text/plain\"` body. * @example * HttpResponse.text('hello world') * HttpResponse.text('Error', { status: 500 }) */ static text<BodyType extends string>(body?: NoInfer<BodyType> | null, init?: HttpResponseInit): HttpResponse<BodyType>; /** * Create a `Response` with a `Content-Type: \"application/json\"` body. * @example * HttpResponse.json({ firstName: 'John' }) * HttpResponse.json({ error: 'Not Authorized' }, { status: 401 }) */ static json<BodyType extends JsonBodyType>(body?: NoInfer<BodyType> | null | undefined, init?: HttpResponseInit): HttpResponse<BodyType>; /** * Create a `Response` with a `Content-Type: \"application/xml\"` body. * @example * HttpResponse.xml(`<user name=\"John\" />`) * HttpResponse.xml(`<article id=\"abc-123\" />`, { status: 201 }) */ static xml<BodyType extends string>(body?: BodyType | null, init?: HttpResponseInit): HttpResponse<BodyType>; /** * Create a `Response` with a `Content-Type: \"text/html\"` body. * @example * HttpResponse.html(`<p class=\"author\">Jane Doe</p>`) * HttpResponse.html(`<main id=\"abc-123\">Main text</main>`, { status: 201 }) */ static html<BodyType extends string>(body?: BodyType | null, init?: HttpResponseInit): HttpResponse<BodyType>; /** * Create a `Response` with an `ArrayBuffer` body. * @example * const buffer = new ArrayBuffer(3) * const view = new Uint8Array(buffer) * view.set([1, 2, 3]) * * HttpResponse.arrayBuffer(buffer) */ static arrayBuffer<BodyType extends ArrayBuffer | SharedArrayBuffer>(body?: BodyType, init?: HttpResponseInit): HttpResponse<BodyType>; /** * Create a `Response` with a `FormData` body. * @example * const data = new FormData() * data.set('name', 'Alice') * * HttpResponse.formData(data) */ static formData(body?: FormData, init?: HttpResponseInit): HttpResponse<FormData>; }",
+      "jsdocSummary": "A drop-in replacement for the standard `Response` class to allow additional features, like mocking the response `Set-Cookie` header."
+    },
+    {
+      "subpath": "./msw",
+      "name": "passthrough",
+      "kind": "function",
+      "signature": "declare function passthrough(): HttpResponse<any>;",
+      "jsdocSummary": "Performs the intercepted request as-is."
+    },
+    {
+      "subpath": "./msw",
+      "name": "RequestHandler",
+      "kind": "class",
+      "signature": "declare abstract class RequestHandler<HandlerInfo extends RequestHandlerDefaultInfo = RequestHandlerDefaultInfo, ParsedResult extends Record<string, any> | undefined = any, ResolverExtras extends Record<string, unknown> = any, HandlerOptions extends RequestHandlerOptions = RequestHandlerOptions> { static cache: WeakMap<StrictRequest<DefaultBodyType>, StrictRequest<DefaultBodyType>>; readonly kind: \"request\"; protected resolver: ResponseResolver<ResolverExtras, any, any>; private resolverIterator?; private resolverIteratorResult?; private resolverIteratorCleanups?; private options?; private scheduledCleanups; info: HandlerInfo & RequestHandlerInternalInfo; /** * Indicates whether this request handler has been used * (its resolver has successfully executed). */ isUsed: boolean; constructor(args: RequestHandlerArgs<HandlerInfo, HandlerOptions>); /** * Reset the runtime state accumulated during response resolution, * such as generator iterator progress. Called when this handler is * removed from the active handlers list so re-adding it later starts * from a clean state. */ protected reset(): void; /** * Restore this handler so it can match requests again after being * exhausted (e.g. via `{ once: true }`). Also clears any accumulated * resolution state. */ protected restore(): void; /** * Determine if the intercepted request should be mocked. */ abstract predicate(args: { request: Request; parsedResult: ParsedResult; resolutionContext?: ResponseResolutionContext; }): boolean | Promise<boolean>; /** * Print out the successfully handled request. */ abstract log(args: { request: Request; response: Response; parsedResult: ParsedResult; }): void; /** * Parse the intercepted request to extract additional information from it. * Parsed result is then exposed to other methods of this request handler. */ parse(_args: { request: Request; resolutionContext?: ResponseResolutionContext; }): Promise<ParsedResult>; /** * Test if this handler matches the given request. * * This method is not used internally but is exposed * as a convenience method for consumers writing custom * handlers. */ test(args: { request: Request; resolutionContext?: ResponseResolutionContext; }): Promise<boolean>; protected extendResolverArgs(_args: { request: Request; parsedResult: ParsedResult; }): ResolverExtras; private cloneRequestOrGetFromCache; /** * Execute this request handler and produce a mocked response * using the given resolver function. */ run(args: { request: StrictRequest<any>; requestId: string; resolutionContext?: ResponseResolutionContext; }): Promise<RequestHandlerExecutionResult<ParsedResult> | null>; private wrapResolver; private createExecutionResult; private scheduleCleanup; private exhaustCleanups; /** * Remove and return the cleanups scheduled for the given request * (or the pending iterator cleanups for generator resolvers). */ private takeScheduledCleanups; private runScheduledCleanups; /** * Conclude the response resolution for the given request. * Runs the scheduled cleanups immediately for responses without a * `ReadableStream` body. For streamed responses, returns an observed * copy of the response and defers the cleanups until its body settles * (is read to completion, errored, or canceled) or the request is * aborted, whichever comes first. */ private complete; }",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./msw",
+      "name": "ResponseResolver",
+      "kind": "type",
+      "signature": "type ResponseResolver<ResolverExtraInfo extends Record<string, unknown> = Record<string, unknown>, RequestBodyType extends DefaultBodyType = DefaultBodyType, ResponseBodyType extends DefaultBodyType = undefined> = (info: ResponseResolverInfo<ResolverExtraInfo, RequestBodyType>) => AsyncResponseResolverReturnType<ResponseBodyType>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./msw",
+      "name": "setupMswServer",
+      "kind": "function",
+      "signature": "export declare function setupMswServer(options?: SetupMswServerOptions): SetupServer;",
+      "jsdocSummary": "Create an MSW server and wire it to Vitest's lifecycle hooks."
+    },
+    {
+      "subpath": "./msw",
+      "name": "SetupMswServerOptions",
+      "kind": "type",
+      "signature": "export type SetupMswServerOptions = { /** Initial handlers. Rarely needed — prefer per-test `server.use(...)`. */ handlers?: RequestHandler[]; /** Policy for unmatched requests. Default: `'error'` (fail-loud). */ onUnhandledRequest?: UnhandledRequestPolicy; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./msw",
+      "name": "SetupServer",
+      "kind": "interface",
+      "signature": "interface SetupServer extends SetupServerCommon { /** * Wraps the given function in a boundary. Any changes to the * network behavior (e.g. adding runtime request handlers via * `server.use()`) will be scoped to this boundary only. * @param callback A function to run (e.g. a test) * * @see {@link https://mswjs.io/docs/api/setup-server/boundary `server.boundary()` API reference} */ boundary: <Args extends Array<any>, R>(callback: (...args: Args) => R) => (...args: Args) => R; }",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./msw",
+      "name": "StrictRequest",
+      "kind": "interface",
+      "signature": "interface StrictRequest<BodyType extends JsonBodyType> extends Request { json(): Promise<BodyType>; clone(): StrictRequest<BodyType>; }",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./msw",
+      "name": "UnhandledRequestPolicy",
+      "kind": "type",
+      "signature": "export type UnhandledRequestPolicy = 'error' | 'warn' | 'bypass';",
+      "jsdocSummary": "Policy for handling requests that match no registered handler."
+    },
+    {
+      "subpath": "./performance",
+      "name": "assertPerformance",
+      "kind": "function",
+      "signature": "export declare function assertPerformance<T>(label: string, operation: () => Promise<T>, maxMs: number): Promise<T>;",
+      "jsdocSummary": "Assert that an operation completes within the specified time"
+    },
+    {
+      "subpath": "./performance",
+      "name": "benchmarkQuery",
+      "kind": "function",
+      "signature": "export declare function benchmarkQuery<T>(label: string, query: () => Promise<T>, iterations?: number): Promise<{ label: string; iterations: number; totalMs: number; avgMs: number; minMs: number; maxMs: number; p50Ms: number; p95Ms: number; p99Ms: number; durations: number[]; }>;",
+      "jsdocSummary": "Benchmark a query by running it multiple times"
+    },
+    {
+      "subpath": "./performance",
+      "name": "comparePerformance",
+      "kind": "function",
+      "signature": "export declare function comparePerformance<T extends Record<string, () => Promise<unknown>>>(operations: T, iterations?: number): Promise<{ label: string; avgMs: number; minMs: number; maxMs: number; relativeDiff: string; }[]>;",
+      "jsdocSummary": "Compare the performance of multiple operations"
+    },
+    {
+      "subpath": "./performance",
+      "name": "createPerformanceTracker",
+      "kind": "function",
+      "signature": "export declare function createPerformanceTracker(): { measure<T>(label: string, operation: () => Promise<T>, options?: { maxMs?: number; }): Promise<T>; getMeasurements(): PerformanceResult[]; printSummary(): void; clear(): void; };",
+      "jsdocSummary": "Create a performance tracker that can measure multiple operations"
+    },
+    {
+      "subpath": "./performance",
+      "name": "measurePerformance",
+      "kind": "function",
+      "signature": "export declare function measurePerformance<T>(label: string, operation: () => Promise<T>, options?: { maxMs?: number; logResult?: boolean; }): Promise<PerformanceResult & { result: T; }>;",
+      "jsdocSummary": "Measure the performance of an operation"
+    },
+    {
+      "subpath": "./performance",
+      "name": "measureQuery",
+      "kind": "function",
+      "signature": "export declare function measureQuery<TSchema extends AnyRelations, T>(db: NodePgDatabase<TSchema>, queryFn: (db: NodePgDatabase<TSchema>) => Promise<T>, label?: string): Promise<{ result: T; durationMs: number; }>;",
+      "jsdocSummary": "Measure database query execution time"
+    },
+    {
+      "subpath": "./performance",
+      "name": "PerformanceResult",
+      "kind": "type",
+      "signature": "export type PerformanceResult = { /** * Operation label */ label: string; /** * Duration in milliseconds */ durationMs: number; /** * Start timestamp */ startTime: number; /** * End timestamp */ endTime: number; /** * Whether the operation passed the performance threshold */ passed: boolean; /** * Maximum allowed duration (if specified) */ maxMs?: number; };",
+      "jsdocSummary": "Performance measurement result"
+    },
+    {
+      "subpath": "./server/integration-tester",
+      "name": "CreateCallerArgs",
+      "kind": "type",
+      "signature": "export type CreateCallerArgs<TContext> = { context: TContext; role: TestUserRole; user: TestUser | null; responseHeaders: Headers; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./server/integration-tester",
+      "name": "IntegrationTester",
+      "kind": "class",
+      "signature": "export declare class IntegrationTester<TSchema extends Record<string, unknown>, TDatabase extends THandle, TRepositories extends Record<string, unknown>, TCaller, TContext extends Record<string, unknown>, THandle extends TesterDatabase<THandle>> { protected readonly config: IntegrationTesterConfig<TSchema, TDatabase, TRepositories, TCaller, TContext, THandle>; protected readonly options: TesterOptions; protected container: StartedPostgreSqlContainer | null; protected ownsContainer: boolean; protected baseConnectionString: string | null; protected uniqueDatabaseName: string | null; protected redisContainer: StartedTestContainer | null; protected ownsRedisContainer: boolean; protected redisNamespace: string | null; protected _db: TDatabase | null; protected _repo: TRepositories | null; protected _kv: KV | null; protected _users: TesterUsers | null; protected _baseContext: TContext | null; protected currentTransaction: THandle | null; protected randomCounter: number; protected randomSeed: string; protected currentUser: TestUser | null; protected currentCaller: TCaller | null; /** * Access to assertion utilities */ readonly assert: typeof assertions; /** * Access to debug utilities */ readonly debug: typeof debug; /** * Access to performance utilities */ readonly performance: typeof performance; /** * Access to faker instance for custom data generation */ readonly faker: import(\"@faker-js/faker\").Faker; constructor(config: IntegrationTesterConfig<TSchema, TDatabase, TRepositories, TCaller, TContext, THandle>, options?: TesterOptions); get db(): TDatabase; /** * Get the current database context (transaction if active, otherwise base db) * This ensures operations use the transaction when running inside withTransaction() */ protected getCurrentDb(): THandle; /** * Repositories on the current database: the test transaction while `withTransaction` is * running, the base database otherwise. So a read through `repo` sees what a caller wrote * in the same transaction. Read it inside the transaction; a value kept from before it * still uses the base database. */ get repo(): TRepositories; /** * The database callers and `repo` use right now: the test transaction while `withTransaction` * is running, the root database otherwise. Use it to check what a caller wrote in the * transaction. (`db` is always the root database, so it cannot see uncommitted rows.) */ get currentDb(): THandle; get kv(): KV; get users(): TesterUsers; /** * Callers for every role. Each property builds its caller when you read it, on the current * database: the test transaction while `withTransaction` is running, the base database * otherwise. Read it inside the transaction; a caller you kept from before it still writes * on the base database. */ get caller(): CallerCollection<TCaller>; get currentTx(): THandle | null; getUser(role: 'user' | 'moderator' | 'admin'): TestUser; setup(): Promise<void>; teardown(): Promise<void>; /** * Clear specific tables by deleting all rows * * @param tables - Tables to clear * * @example * ```typescript * await tester.clearTables(users, games, sessions); * ``` */ clearTables(...tables: PgTable[]): Promise<void>; /** * Clear all tables in the schema * * @example * ```typescript * await tester.clearAllTables(); * ``` */ clearAllTables(): Promise<void>; /** * Clear tables matching a pattern * * @param pattern - RegExp or string pattern to match table names * * @example * ```typescript * // Clear all tables starting with 'temp_' * await tester.clearTablesByPattern(/^temp_/); * ``` */ clearTablesByPattern(pattern: RegExp | string): Promise<void>; /** * Clear all tables except specified ones * * @param exceptTables - Tables to preserve * * @example * ```typescript * // Clear all tables except users and settings * await tester.clearTablesExcept(users, settings); * ``` */ clearTablesExcept(...exceptTables: PgTable[]): Promise<void>; /** * Seed the database with test data * * @param data - Object mapping table names to arrays of records * * @example * ```typescript * await tester.seed({ * users: [user1, user2, user3], * games: [game1, game2], * sessions: [session1, session2, session3, session4], * }); * ``` */ seed<T extends Record<string, readonly object[]>>(data: T): Promise<void>; /** * Create a custom caller for a specific user * * @param user - User to create caller for * @returns tRPC caller instance * * @example * ```typescript * const customUser = { id: 'usr_custom', email: 'custom@example.com', name: 'Custom' }; * const caller = tester.createCustomCaller(customUser); * const result = await caller.someMethod(); * ``` */ createCustomCaller(user: TestUser): TCaller; /** * Return the default test user and caller with 'user' role * * @returns Object with user and caller * * @example * ```typescript * const { user, caller } = tester.asUser(); * await caller.someMethod(); * ``` */ asUser(): { user: TestUser; caller: TCaller; }; /** * Create a new dynamic test user with 'user' role and return caller. * This creates a new user in the database via the onUserCreate hook. * Use this when you need multiple different users in a test. * * @returns Promise with user and caller * * @example * ```typescript * const { user: player1, caller: caller1 } = await tester.createUser(); * const { user: player2, caller: caller2 } = await tester.createUser(); * ``` */ createUser(): Promise<{ user: TestUser; caller: TCaller; }>; /** * Create a guest (unauthenticated) caller * * @returns Caller without authentication * * @example * ```typescript * const caller = tester.asGuest(); * await caller.public.getPublicData(); * ``` */ asGuest(): TCaller; /** * Return the default test user and caller with 'moderator' role * * @returns Object with moderator user and caller * * @example * ```typescript * const { user, caller } = tester.asModerator(); * await caller.moderation.reviewContent(); * ``` */ asModerator(): { user: TestUser; caller: TCaller; }; /** * Return the default test user and caller with 'admin' role * * @returns Object with admin user and caller * * @example * ```typescript * const { user, caller } = tester.asAdmin(); * await caller.admin.deleteUser(); * ``` */ asAdmin(): { user: TestUser; caller: TCaller; }; /** * Switch context to a different user and return caller * * @param userId - User ID to switch to * @returns Caller for the specified user * * @example * ```typescript * const { user: user1 } = tester.asUser(); * const { user: user2 } = tester.asUser(); * const caller1 = tester.withUser(user1.id); * await caller1.someMethod(); * ``` */ withUser(userId: UserId): TCaller; /** * Get the current user in the test context * * @returns Current test user or null if unauthenticated * * @example * ```typescript * const { user } = tester.asUser(); * const currentUser = tester.getCurrentUser(); * expect(currentUser?.id).toBe(user.id); * ``` */ getCurrentUser(): TestUser | null; /** * Get the current caller * * @returns Current caller instance * @throws Error if no caller is available * * @example * ```typescript * tester.asUser(); * const caller = tester.getCaller(); * await caller.someMethod(); * ``` */ getCaller(): TCaller; /** * Wait for async projections to complete * * In event-sourced systems, projections update asynchronously after events are stored. * This method waits for a short period to allow projections to process. * * @param ms - Milliseconds to wait (default: 100ms) * * @example * ```typescript * await tester.caller.user.createUser({ ... }); * await tester.waitForProjections(); * const user = await tester.caller.user.getUser(); * ``` */ waitForProjections(ms?: number): Promise<void>; /** * Get the current test context with all services */ get context(): TContext; /** * Execute a callback within an auto-rollback transaction * * The transaction is automatically rolled back after the callback completes, * leaving the database in a clean state for the next test. * * @param callback - Async function to execute in transaction * @returns Result of callback (always undefined due to rollback) * * @example * ```typescript * await tester.withTransaction(async () => { * const user = await tester.db.insert(users).values({...}).returning(); * const result = await tester.caller.user.someMethod(); * expect(result).toBeDefined(); * // Transaction automatically rolls back after this * }); * ``` */ withTransaction(callback: () => Promise<unknown>): Promise<void>; /** * Assert that a value is a valid branded ID with the expected prefix * * @param value - Value to check * @param prefix - Expected ID prefix (e.g., 'usr_', 'game_') * @throws Error if value is not a string or doesn't have the correct prefix * * @example * ```typescript * const user = await createUser(); * tester.assertValidId(user.id, 'usr_'); * ``` */ assertValidId(value: unknown, prefix: string): asserts value is string; /** * Assert that an object has valid createdAt and updatedAt timestamps * * Each may be a `Date`, or a Temporal `Instant` or `ZonedDateTime` from `@arki/date`. * * @param obj - Object to check * @throws Error if timestamps are missing or are not one of those types * * @example * ```typescript * const game = await tester.repo.games.create({...}); * tester.assertTimestamps(game); * ``` */ assertTimestamps(obj: unknown): asserts obj is Timestamps; /** * Assert that updatedAt is greater than or equal to createdAt * * @param obj - Object with timestamps * @throws Error if updatedAt is before createdAt * * @example * ```typescript * const game = await tester.repo.games.update(id, {...}); * tester.assertTimestamps(game); * tester.assertUpdatedAfterCreated(game); * ``` */ assertUpdatedAfterCreated(obj: Timestamps): void; /** * Assert that a response has valid pagination structure * * @param response - Response to check * @throws Error if response doesn't have items array * * @example * ```typescript * const result = await tester.caller.user.games.list(); * tester.assertPaginatedResponse(result); * expect(result.items).toHaveLength(10); * ``` */ assertPaginatedResponse(response: unknown): asserts response is { items: unknown[]; total?: number; nextCursor?: string | null; hasMore?: boolean; }; /** * Generate a deterministic URL-safe slug * * @param prefix - Optional prefix for the slug * @returns Generated slug * * @example * ```typescript * const slug = tester.generateSlug(); // 'test-a1b2c3d4' * const slug = tester.generateSlug('game'); // 'game-a1b2c3d4' * ``` */ generateSlug(prefix?: string): string; /** * Generate a deterministic email address * * @param prefix - Optional prefix for the email * @returns Generated email * * @example * ```typescript * const email = tester.generateEmail(); // 'test-a1b2c3d4@example.com' * const email = tester.generateEmail('admin'); // 'admin-a1b2c3d4@example.com' * ``` */ generateEmail(prefix?: string): string; /** * Generate a deterministic URL * * @param path - Optional path component * @returns Generated URL * * @example * ```typescript * const url = tester.generateUrl(); // 'https://example.com/test-a1b2c3d4' * const url = tester.generateUrl('games/chess'); // 'https://example.com/games/chess' * ``` */ generateUrl(path?: string): string; /** * Generate a deterministic random string * * @param length - Length of string (default: 16) * @returns Generated string * * @example * ```typescript * const token = tester.generateString(32); * const code = tester.generateString(6); * ``` */ generateString(length?: number): string; /** * Generate a random phone number * * @param format - Phone format (default: 'US') * @returns Generated phone number * * @example * ```typescript * const phone = tester.generatePhone(); // '+1-555-123-4567' * ``` */ generatePhone(format?: 'US' | 'INTERNATIONAL'): string; /** * Generate a random date within a range * * @param options - Options for date generation * @returns Generated date * * @example * ```typescript * // Date in the past year * const date = tester.generateDate({ past: { years: 1 } }); * * // Date in the next 30 days * const date = tester.generateDate({ future: { days: 30 } }); * * // Date between two dates * const date = tester.generateDate({ * between: { from: new Date('2024-01-01'), to: new Date('2024-12-31') } * }); * ``` */ generateDate(options?: { past?: { years?: number; months?: number; days?: number; }; future?: { years?: number; months?: number; days?: number; }; between?: { from: Timestamp; to: Timestamp; }; }): Date; /** * Generate a random number between min and max (inclusive) * * @param min - Minimum value * @param max - Maximum value * @returns Random number * * @example * ```typescript * const score = tester.generateBetween(0, 100); * const priority = tester.generateBetween(1, 5); * ``` */ generateBetween(min: number, max: number): number; /** * Generate a random value from an enum or array * * @param values - Enum object or array of values * @returns Random value * * @example * ```typescript * enum Status { Active = 'active', Inactive = 'inactive', Pending = 'pending' } * const status = tester.generateFromEnum(Status); * * const role = tester.generateFromEnum(['user', 'admin', 'moderator']); * ``` */ generateFromEnum<T>(values: T[] | Record<string, T>): T; /** * Get the random seed used for generation (for debugging) * * @returns Random seed string */ getRandomSeed(): string; /** * Reset the random counter (useful for creating reproducible sequences within a test) * * @example * ```typescript * tester.resetRandomCounter(); * const email1 = tester.generateEmail(); // Deterministic * tester.resetRandomCounter(); * const email2 = tester.generateEmail(); // Same as email1 * ``` */ resetRandomCounter(): void; protected mergeUsers(overrides?: TesterUserOverrides): TesterUsers; protected createCaller(role: TestUserRole, user: TestUser | null, context: TContext): TCaller; protected buildBaseContext(): TContext; /** * A short-lived connection built from `config.schema`. The tester uses it for what does not * depend on the app's database type: running migrations and creating or dropping the unique * test database. Close it with `closeDatabaseClient`. */ protected openSchemaDatabase(connectionString: string): import(\"drizzle-orm/node-postgres\").NodePgDatabase<import(\"drizzle-orm\").ExtractTablesWithRelations<{}, import(\"drizzle-orm\").ExtractTablesFromSchema<TSchema>>>; /** * Build a caller for `role` on the current database (the test transaction while * `withTransaction` runs, the base database otherwise). */ protected callerFor(role: TestUserRole, user: TestUser | null): TCaller; /** Make `user` the current user and hand out a caller for it. */ protected asRole(role: TestUserRole, user: TestUser): { user: TestUser; caller: TCaller; }; }",
+      "jsdocSummary": "Integration testing helper class providing comprehensive utilities for testing tRPC applications with PostgreSQL and Redis."
+    },
+    {
+      "subpath": "./server/integration-tester",
+      "name": "IntegrationTesterConfig",
+      "kind": "type",
+      "signature": "export type IntegrationTesterConfig<TSchema extends Record<string, unknown>, TDatabase extends THandle, TRepositories, TCaller, TContext, THandle extends TesterDatabase<THandle>> = { schema: TSchema; migrationsFolder: string; /** * Open the app's database on `connectionString`. `TDatabase`, the type of `tester.db`, is * whatever this returns. Build it the way the app does in production (same relations), so * relational queries work in tests. The tester ends its `$client` pool on teardown. */ createDatabase(connectionString: string): TDatabase; createContext(params: { db: THandle; repo: TRepositories; kv: KV | null; connectionString: string; }): TContext; createCaller(args: CreateCallerArgs<TContext>): TCaller; createRepositories(db: THandle): TRepositories; defaultUsers: TesterUsers; /** * Optional hook called after a test user is created. * Use this to perform additional setup like creating related records. */ onUserCreate?: (params: { user: TestUser; context: TContext; }) => Promise<void>; /** * Optional hook called during setup after database and context are ready, * but before default callers are created. * Use this to create default users in the database (via auth system). */ onSetup?: (params: { context: TContext; users: TesterUsers; }) => Promise<void>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./server/integration-tester",
+      "name": "TesterDatabase",
+      "kind": "type",
+      "signature": "export type TesterDatabase<THandle> = { transaction<TResult>(callback: (tx: THandle) => Promise<TResult>): Promise<TResult>; } & PgAsyncDatabase<NodePgQueryResultHKT, AnyRelations>;",
+      "jsdocSummary": "What the tester needs from the app's database handle type."
+    },
+    {
+      "subpath": "./server/integration-tester",
+      "name": "TesterOptions",
+      "kind": "type",
+      "signature": "export type TesterOptions = { users?: TesterUserOverrides; autoRollback?: boolean; randomSeed?: string; connectionString?: string; useUniqueDatabase?: boolean; redisConnectionString?: string; useUniqueRedisNamespace?: boolean; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./server/integration-tester",
+      "name": "TesterUserOverrides",
+      "kind": "type",
+      "signature": "export type TesterUserOverrides = Partial<Record<'user' | 'moderator' | 'admin', TestUser>>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./server/integration-tester",
+      "name": "TesterUsers",
+      "kind": "type",
+      "signature": "export type TesterUsers = { user: TestUser; moderator: TestUser; admin: TestUser; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./server/integration-tester",
+      "name": "TestUser",
+      "kind": "type",
+      "signature": "export type TestUser = { id: UserId; email: string; name: string; permissions?: string[]; roles?: string[]; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./server/integration-tester",
+      "name": "TestUserRole",
+      "kind": "type",
+      "signature": "export type TestUserRole = 'public' | 'user' | 'moderator' | 'admin';",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./server/tester-builder",
+      "name": "ContextTesterBuilder",
+      "kind": "type",
+      "signature": "export type ContextTesterBuilder<TContext extends Record<string, unknown>> = { /** * Capture the caller type for type inference * * @example * ```typescript * const t = initTester * .context<AppContext>() * .caller<Caller>() * .create({ ... }); * ``` */ caller<TCaller>(): TesterBuilder<TContext, TCaller>; };",
+      "jsdocSummary": "Builder with context type captured"
+    },
+    {
+      "subpath": "./server/tester-builder",
+      "name": "InitialTesterBuilder",
+      "kind": "type",
+      "signature": "export type InitialTesterBuilder = { /** * Capture the context type for type inference * * @example * ```typescript * const t = initTester * .context<AppContext>() * .caller<Caller>() * .create({ ... }); * ``` */ context<TContext extends Record<string, unknown>>(): ContextTesterBuilder<TContext>; };",
+      "jsdocSummary": "Initial tester builder (no types captured yet)"
+    },
+    {
+      "subpath": "./server/tester-builder",
+      "name": "initTester",
+      "kind": "variable",
+      "signature": "export declare const initTester: InitialTesterBuilder;",
+      "jsdocSummary": "Initialize the tester builder"
+    },
+    {
+      "subpath": "./server/tester-builder",
+      "name": "TesterBuilder",
+      "kind": "type",
+      "signature": "export type TesterBuilder<TContext extends Record<string, unknown>, TCaller> = { /** * Create the tester builder with configuration. The schema, database and * repository types are inferred from `config`. */ create<TSchema extends Record<string, unknown>, TDatabase extends THandle, TRepositories extends Record<string, unknown>, THandle extends TesterDatabase<THandle>>(config: TesterConfig<TSchema, TDatabase, TRepositories, TContext, TCaller, THandle>): { /** * Tester factory with methods to create configured testers */ tester: { /** * Create a tester with typed factories * * @example * ```typescript * const createTester = t.tester.withFactories(factories); * const tester = createTester(); * tester.db; // the app's database type * tester.repo; // the app's repositories * tester.factory.gameRegistry.game(); // Fully typed! * ``` */ withFactories<TFactories extends object>(factories: TFactories): (options?: TesterOptions) => IntegrationTester<TSchema, TDatabase, TRepositories, TCaller, TContext, THandle> & { /** The factories passed to `withFactories`, exactly as typed there. */ readonly factory: TFactories; }; /** * Create a basic tester without factories (it has no `factory` property) */ create(options?: TesterOptions): IntegrationTester<TSchema, TDatabase, TRepositories, TCaller, TContext, THandle>; }; }; };",
+      "jsdocSummary": "Tester builder with context and caller types captured"
+    },
+    {
+      "subpath": "./server/tester-builder",
+      "name": "TesterConfig",
+      "kind": "type",
+      "signature": "export type TesterConfig<TSchema extends Record<string, unknown>, TDatabase extends THandle, TRepositories extends Record<string, unknown>, TContext extends Record<string, unknown>, TCaller, THandle extends TesterDatabase<THandle>> = IntegrationTesterConfig<TSchema, TDatabase, TRepositories, TCaller, TContext, THandle>;",
+      "jsdocSummary": "Configuration for tester initialization. The schema, database and repository types are inferred from the functions you pass in (the database type from `createRepositories`' parameter, the root database type from what `createDatabase` returns, and the repository type from `createRepositories`' return value)."
+    },
+    {
+      "subpath": "./services/http-fixtures",
+      "name": "httpFixtures",
+      "kind": "variable",
+      "signature": "export declare const httpFixtures: (options: HttpFixturesOptions) => import(\"../stack/index.js\").ServiceSpec<HttpFixturesValue, HttpFixturesValue>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./services/http-fixtures",
+      "name": "HttpFixturesOptions",
+      "kind": "type",
+      "signature": "export type HttpFixturesOptions = { /** The service name in error messages. Default `http-fixtures`. */ readonly name?: string; /** Answers one request. */ readonly handle: (request: Request) => Response | Promise<Response>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./services/http-fixtures",
+      "name": "HttpFixturesValue",
+      "kind": "type",
+      "signature": "export type HttpFixturesValue = { readonly url: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./services/mailpit",
+      "name": "mailbox",
+      "kind": "function",
+      "signature": "export declare function mailbox(httpUrl: string): Mailbox;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./services/mailpit",
+      "name": "Mailbox",
+      "kind": "type",
+      "signature": "export type Mailbox = { /** Mails to `to` (an exact address) or all mails when omitted. Oldest first. */ all(to?: string): Promise<readonly MailSummary[]>; /** * Waits until a mail to `to` whose subject matches arrives, and returns it in full. * Polls Mailpit; on timeout the error lists what Mailpit does hold (MAIL_NOT_RECEIVED). */ waitFor(match: { readonly to: string; readonly subject?: string | RegExp; readonly timeoutMs?: number; }): Promise<ReceivedMail>; /** Deletes the mails to `to`, or every mail when omitted. */ clear(to?: string): Promise<void>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./services/mailpit",
+      "name": "mailpit",
+      "kind": "variable",
+      "signature": "export declare const mailpit: (options?: { readonly image?: string; }) => import(\"../stack/index.js\").ServiceSpec<null, MailpitWorker>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./services/mailpit",
+      "name": "MailpitWorker",
+      "kind": "type",
+      "signature": "export type MailpitWorker = { readonly httpUrl: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./services/mailpit",
+      "name": "MailSummary",
+      "kind": "type",
+      "signature": "export type MailSummary = { readonly id: string; readonly subject: string; readonly to: readonly string[]; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./services/mailpit",
+      "name": "ReceivedMail",
+      "kind": "type",
+      "signature": "export type ReceivedMail = MailSummary & { readonly text: string; readonly html: string; /** Every `http(s)` link in the HTML part, in order. */ links(): readonly string[]; };",
+      "jsdocSummary": "One mail, read in full."
+    },
+    {
+      "subpath": "./services/ollama",
+      "name": "ollama",
+      "kind": "variable",
+      "signature": "export declare const ollama: (options: OllamaOptions) => import(\"../stack/index.js\").ServiceSpec<OllamaValue, OllamaValue>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./services/ollama",
+      "name": "OllamaOptions",
+      "kind": "type",
+      "signature": "export type OllamaOptions = { /** Default `http://127.0.0.1:11434`. */ readonly url?: string; /** Models the run needs, for example `qwen3:0.6b`. */ readonly models?: readonly string[]; /** The model that judges AI output. Checked like `models`. */ readonly judge?: string; /** The model that embeds text for `similarTo`. Checked like `models`. */ readonly embedding?: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./services/ollama",
+      "name": "OllamaValue",
+      "kind": "type",
+      "signature": "export type OllamaValue = { readonly url: string; /** Every model the run asked for, `judge` and `embedding` included. */ readonly models: readonly string[]; /** The judge model, or `null` when the run asked for none. */ readonly judge: string | null; /** The embedding model, or `null` when the run asked for none. */ readonly embedding: string | null; /** Model name to digest, for every model the run asked for. */ readonly digests: Readonly<Record<string, string>>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./services/postgres",
+      "name": "postgres",
+      "kind": "variable",
+      "signature": "export declare const postgres: (options: PostgresOptions) => import(\"../stack/index.js\").ServiceSpec<PostgresRun, PostgresWorker>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./services/postgres",
+      "name": "PostgresOptions",
+      "kind": "type",
+      "signature": "export type PostgresOptions = { /** Default `postgres:17-alpine`. */ readonly image?: string; /** Builds the app's schema in the template. `url` points at the template; it runs once per run. */ readonly buildSchema: (url: string) => Promise<void>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./services/postgres",
+      "name": "PostgresRun",
+      "kind": "type",
+      "signature": "export type PostgresRun = { readonly adminUrl: string; readonly templateDb: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./services/postgres",
+      "name": "PostgresWorker",
+      "kind": "type",
+      "signature": "export type PostgresWorker = { readonly url: string; readonly database: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./services/postgres",
+      "name": "truncateAll",
+      "kind": "function",
+      "signature": "export declare function truncateAll(url: string): Promise<void>;",
+      "jsdocSummary": "Empties every table in `url`, restarting identities. Use between tests that share a worker."
+    },
+    {
+      "subpath": "./services/redis",
+      "name": "flushRedis",
+      "kind": "function",
+      "signature": "export declare function flushRedis(url: string): Promise<void>;",
+      "jsdocSummary": "Empties every key of the Redis at `url` (`FLUSHALL`), so one test's keys never reach the next."
+    },
+    {
+      "subpath": "./services/redis",
+      "name": "redis",
+      "kind": "variable",
+      "signature": "export declare const redis: (options?: { readonly image?: string; }) => import(\"../stack/index.js\").ServiceSpec<null, RedisWorker>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./services/redis",
+      "name": "RedisWorker",
+      "kind": "type",
+      "signature": "export type RedisWorker = { readonly url: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack",
+      "name": "AttachedStack",
+      "kind": "type",
+      "signature": "export type AttachedStack<M extends ServiceMap> = { worker(workerIndex: number): Promise<WorkerSlice<M>>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack",
+      "name": "defineStack",
+      "kind": "function",
+      "signature": "export declare function defineStack<const M extends ServiceMap>(options: StackOptions<M>): Stack<M>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack",
+      "name": "Env",
+      "kind": "type",
+      "signature": "export type Env = Readonly<Record<string, string>>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack",
+      "name": "Json",
+      "kind": "type",
+      "signature": "export type Json = string | number | boolean | null | readonly Json[] | { readonly [key: string]: Json; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack",
+      "name": "READ_MANIFEST_FAILURES",
+      "kind": "variable",
+      "signature": "export declare const READ_MANIFEST_FAILURES: readonly [import(\"@arki/failure\").FailureDefinition<\"testing.stack_not_started\", undefined>, import(\"@arki/failure\").FailureDefinition<\"testing.stack_manifest_invalid\", undefined>];",
+      "jsdocSummary": "Every failure `readManifest` returns."
+    },
+    {
+      "subpath": "./stack",
+      "name": "readManifest",
+      "kind": "function",
+      "signature": "export declare function readManifest(raw?: string | undefined): StackManifest | ReadManifestFailure;",
+      "jsdocSummary": "Reads the manifest the runner put in `process.env.ARKI_STACK`. The one place it is validated. Returns {@link StackNotStarted} for an empty env and {@link StackManifestInvalid} for text that is not a manifest."
+    },
+    {
+      "subpath": "./stack",
+      "name": "ReadManifestFailure",
+      "kind": "type",
+      "signature": "export type ReadManifestFailure = FailureOf<(typeof READ_MANIFEST_FAILURES)[number]>;",
+      "jsdocSummary": "A failure value returned by `readManifest`."
+    },
+    {
+      "subpath": "./stack",
+      "name": "RunningStack",
+      "kind": "type",
+      "signature": "export type RunningStack<M extends ServiceMap> = AttachedStack<M> & { readonly manifest: StackManifest; stop(): Promise<void>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack",
+      "name": "RunValues",
+      "kind": "type",
+      "signature": "export type RunValues<M extends ServiceMap> = { readonly [K in keyof M]: RunOf<M[K]>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack",
+      "name": "service",
+      "kind": "function",
+      "signature": "export declare function service<TRun extends Json, TWorker extends Json = TRun>(spec: ServiceSpec<TRun, TWorker>): ServiceSpec<TRun, TWorker>;",
+      "jsdocSummary": "Writes a service. Method syntax in the type keeps every spec assignable to the stack's map."
+    },
+    {
+      "subpath": "./stack",
+      "name": "ServiceMap",
+      "kind": "type",
+      "signature": "export type ServiceMap = Readonly<Record<string, ServiceSpec<Json, Json>>>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack",
+      "name": "ServiceScope",
+      "kind": "type",
+      "signature": "export type ServiceScope = 'run' | 'worker';",
+      "jsdocSummary": "`run`: started once per run. `worker`: a new piece for every worker."
+    },
+    {
+      "subpath": "./stack",
+      "name": "ServiceSpec",
+      "kind": "type",
+      "signature": "export type ServiceSpec<TRun extends Json, TWorker extends Json = TRun> = { readonly name: string; readonly scope: ServiceScope; /** Once per run, in the runner. A failed start must leave nothing running. */ start(ctx: StartContext): Promise<Started<TRun>>; /** Once per worker. Without it, every worker shares the run value. */ slice?(run: TRun, ctx: WorkerContext): Promise<Started<TWorker>>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack",
+      "name": "Stack",
+      "kind": "type",
+      "signature": "export type Stack<M extends ServiceMap> = { readonly services: M; /** Runner side: start every service. */ start(ctx: StartContext): Promise<RunningStack<M>>; /** Worker side: use the run values the runner already started. */ attach(manifest: StackManifest): AttachedStack<M>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack",
+      "name": "STACK_ENV_KEY",
+      "kind": "variable",
+      "signature": "export declare const STACK_ENV_KEY = \"ARKI_STACK\";",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack",
+      "name": "StackManifest",
+      "kind": "type",
+      "signature": "export type StackManifest = { readonly runId: string; readonly run: Readonly<Record<string, Json>>; };",
+      "jsdocSummary": "What crosses the process boundary: the run values and the run id. Plain JSON."
+    },
+    {
+      "subpath": "./stack",
+      "name": "StackManifestInvalid",
+      "kind": "variable",
+      "signature": "export declare const StackManifestInvalid: import(\"@arki/failure\").FailureDefinition<\"testing.stack_manifest_invalid\", undefined>;",
+      "jsdocSummary": "`ARKI_STACK` holds text that is not the manifest the runner writes: not JSON, or not `{ runId: string, run: object }`."
+    },
+    {
+      "subpath": "./stack",
+      "name": "StackNotStarted",
+      "kind": "variable",
+      "signature": "export declare const StackNotStarted: import(\"@arki/failure\").FailureDefinition<\"testing.stack_not_started\", undefined>;",
+      "jsdocSummary": "`ARKI_STACK` is empty: the stack starts in Playwright's `globalSetup`, so the test was not run through `playwright test`, or the stack was not started first."
+    },
+    {
+      "subpath": "./stack",
+      "name": "StackOptions",
+      "kind": "type",
+      "signature": "export type StackOptions<M extends ServiceMap> = { readonly services: M; /** The env the app server and the in-process app boot with. `origin` is the worker's server URL. */ readonly env: (worker: WorkerValues<M>, context: { readonly origin: string; }) => Env; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack",
+      "name": "StartContext",
+      "kind": "type",
+      "signature": "export type StartContext = { /** Unique per run. Services use it to name containers and databases. */ readonly runId: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack",
+      "name": "Started",
+      "kind": "type",
+      "signature": "export type Started<T> = { readonly value: T; readonly stop: () => Promise<void>; };",
+      "jsdocSummary": "A running piece. `stop` can be called any number of times."
+    },
+    {
+      "subpath": "./stack",
+      "name": "WorkerContext",
+      "kind": "type",
+      "signature": "export type WorkerContext = { readonly runId: string; readonly workerIndex: number; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack",
+      "name": "WorkerSlice",
+      "kind": "type",
+      "signature": "export type WorkerSlice<M extends ServiceMap> = { readonly values: WorkerValues<M>; /** The env for a server that will listen at `origin`. */ envFor(origin: string): Env; stop(): Promise<void>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack",
+      "name": "WorkerValues",
+      "kind": "type",
+      "signature": "export type WorkerValues<M extends ServiceMap> = { readonly [K in keyof M]: WorkerOf<M[K]>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack/contract",
+      "name": "ContractOptions",
+      "kind": "type",
+      "signature": "export type ContractOptions<TRun extends Json, TWorker extends Json> = { readonly name: string; readonly make: () => ServiceSpec<TRun, TWorker>; /** A service of the same kind whose `start` fails after it has begun work. */ readonly makeFailing?: () => ServiceSpec<TRun, TWorker>; /** Proves a slice works, for example by connecting. Runs on two slices at once. */ readonly probe?: (worker: TWorker) => Promise<void>; /** Proves two slices do not see each other. */ readonly apart?: (a: TWorker, b: TWorker) => Promise<void>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack/contract",
+      "name": "describeServiceContract",
+      "kind": "function",
+      "signature": "export declare function describeServiceContract<TRun extends Json, TWorker extends Json>(options: ContractOptions<TRun, TWorker>): void;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./stack/contract",
+      "name": "leftoverContainers",
+      "kind": "function",
+      "signature": "export declare function leftoverContainers(runId: string): Promise<readonly string[]>;",
+      "jsdocSummary": "Containers still alive (or stopped but not removed) that carry this run's label."
+    },
+    {
+      "subpath": "./stack/contract",
+      "name": "newRunId",
+      "kind": "function",
+      "signature": "export declare function newRunId(): string;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./timestamps",
+      "name": "assertTimestamps",
+      "kind": "function",
+      "signature": "export declare function assertTimestamps(obj: unknown): asserts obj is Timestamps;",
+      "jsdocSummary": "Assert that an object has valid createdAt and updatedAt timestamps."
+    },
+    {
+      "subpath": "./timestamps",
+      "name": "assertUpdatedAfterCreated",
+      "kind": "function",
+      "signature": "export declare function assertUpdatedAfterCreated(obj: Timestamps): void;",
+      "jsdocSummary": "Assert that updatedAt is greater than or equal to createdAt."
+    },
+    {
+      "subpath": "./timestamps",
+      "name": "describeKind",
+      "kind": "function",
+      "signature": "export declare function describeKind(value: unknown): string;",
+      "jsdocSummary": "Name the kind of a value that failed `isTimestamp`, for an error message."
+    },
+    {
+      "subpath": "./timestamps",
+      "name": "epochMilliseconds",
+      "kind": "function",
+      "signature": "export declare function epochMilliseconds(value: Timestamp): number;",
+      "jsdocSummary": "The epoch of a timestamp in whole milliseconds, rounded toward the past."
+    },
+    {
+      "subpath": "./timestamps",
+      "name": "epochNanoseconds",
+      "kind": "function",
+      "signature": "export declare function epochNanoseconds(value: Timestamp): bigint;",
+      "jsdocSummary": "The exact epoch of a timestamp in nanoseconds, whatever its kind."
+    },
+    {
+      "subpath": "./timestamps",
+      "name": "isTimestamp",
+      "kind": "function",
+      "signature": "export declare function isTimestamp(value: unknown): value is Timestamp;",
+      "jsdocSummary": "Whether a value is a `Date` (not `Invalid Date`), `Instant` or `ZonedDateTime`."
+    },
+    {
+      "subpath": "./timestamps",
+      "name": "Timestamp",
+      "kind": "type",
+      "signature": "export type Timestamp = Date | Timeline;",
+      "jsdocSummary": "A moment in time: a `Date`, or a Temporal `Instant` or `ZonedDateTime`."
+    },
+    {
+      "subpath": "./timestamps",
+      "name": "Timestamps",
+      "kind": "type",
+      "signature": "export type Timestamps = { createdAt: Timestamp; updatedAt: Timestamp; };",
+      "jsdocSummary": "An object with the two timestamps every table row carries."
+    },
+    {
+      "subpath": "./vitest-setup",
+      "name": "afterAll",
+      "kind": "function",
+      "signature": "declare function afterAll<ExtraContext = object>(this: unknown, fn: AfterAllListener<ExtraContext>, timeout?: number): void;",
+      "jsdocSummary": "Registers a callback function to be executed once after all tests within the current suite have completed. This hook is useful for scenarios where you need to perform cleanup operations after all tests in a suite have run, such as closing database connections or cleaning up temporary files."
+    },
+    {
+      "subpath": "./vitest-setup",
+      "name": "afterEach",
+      "kind": "function",
+      "signature": "declare function afterEach<ExtraContext = object>(fn: AfterEachListener<ExtraContext>, timeout?: number): void;",
+      "jsdocSummary": "Registers a callback function to be executed after each test within the current suite has completed. This hook is useful for scenarios where you need to clean up or reset the test environment after each test runs, such as deleting temporary files, clearing test-specific database entries, or resetting mocked functions."
+    },
+    {
+      "subpath": "./vitest-setup",
+      "name": "beforeAll",
+      "kind": "function",
+      "signature": "declare function beforeAll<ExtraContext = object>(this: unknown, fn: BeforeAllListener<ExtraContext>, timeout?: number): void;",
+      "jsdocSummary": "Registers a callback function to be executed once before all tests within the current suite. This hook is useful for scenarios where you need to perform setup operations that are common to all tests in a suite, such as initializing a database connection or setting up a test environment."
+    },
+    {
+      "subpath": "./vitest-setup",
+      "name": "beforeEach",
+      "kind": "function",
+      "signature": "declare function beforeEach<ExtraContext = object>(fn: BeforeEachListener<ExtraContext>, timeout?: number): void;",
+      "jsdocSummary": "Registers a callback function to be executed before each test within the current suite. This hook is useful for scenarios where you need to reset or reinitialize the test environment before each test runs, such as resetting database states, clearing caches, or reinitializing variables."
+    },
+    {
+      "subpath": "./vitest-setup",
+      "name": "describe",
+      "kind": "variable",
+      "signature": "declare const describe: SuiteAPI;",
+      "jsdocSummary": "Creates a suite of tests, allowing for grouping and hierarchical organization of tests. Suites can contain both tests and other suites, enabling complex test structures."
+    },
+    {
+      "subpath": "./vitest-setup",
+      "name": "expect",
+      "kind": "variable",
+      "signature": "declare const globalExpect: ExpectStatic;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./vitest-setup",
+      "name": "it",
+      "kind": "variable",
+      "signature": "declare const it: TestAPI;",
+      "jsdocSummary": "Defines a test case with a given name and test function. The test function can optionally be configured with test options."
+    },
+    {
+      "subpath": "./vitest-setup",
+      "name": "test",
+      "kind": "variable",
+      "signature": "declare const test: TestAPI;",
+      "jsdocSummary": "Defines a test case with a given name and test function. The test function can optionally be configured with test options."
+    },
+    {
+      "subpath": "./vitest-setup",
+      "name": "vi",
+      "kind": "variable",
+      "signature": "declare const vi: VitestUtils;",
+      "jsdocSummary": ""
+    }
+  ],
+  "groups": [],
+  "errorCodes": [
+    "testing.ollama_answer_invalid",
+    "testing.ollama_unavailable",
+    "testing.stack_manifest_invalid",
+    "testing.stack_not_started"
+  ]
+}

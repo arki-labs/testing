@@ -1,0 +1,38 @@
+[
+  {
+    "code": "testing.ollama_answer_invalid",
+    "package": "@arki/testing",
+    "kind": "failure",
+    "what": "Ollama answered, but not in the shape the call asked for: the chat text is not JSON, it does not match the schema, or the embed answer is not one vector per text.",
+    "fix": "Use a stronger judge model, or shorten the text so the answer is not cut off at `maxTokens`.",
+    "verify": "cd packages/testing && bun run vitest run src/ai/judge.test.ts",
+    "source": "src/ai/judge.ts:36"
+  },
+  {
+    "code": "testing.ollama_unavailable",
+    "package": "@arki/testing",
+    "kind": "failure",
+    "what": "Ollama did not answer: it is not running, the call timed out, or it answered with an error status. A scorer turns it into an `unscorable` score, so a missing judge is never read as a pass or a zero.",
+    "fix": "Start the daemon with `ollama serve`, check the model is pulled, or raise `timeoutMs`.",
+    "verify": "cd packages/testing && bun run vitest run src/ai/judge.test.ts",
+    "source": "src/ai/judge.ts:23"
+  },
+  {
+    "code": "testing.stack_manifest_invalid",
+    "package": "@arki/testing",
+    "kind": "failure",
+    "what": "`ARKI_STACK` holds text that is not the manifest the runner writes: not JSON, or not `{ runId: string, run: object }`.",
+    "fix": "Do not set `ARKI_STACK` by hand; let `stackSetup` write it.",
+    "verify": "cd packages/testing && bun run vitest run src/stack/index.test.ts",
+    "source": "src/stack/index.ts:111"
+  },
+  {
+    "code": "testing.stack_not_started",
+    "package": "@arki/testing",
+    "kind": "failure",
+    "what": "`ARKI_STACK` is empty: the stack starts in Playwright's `globalSetup`, so the test was not run through `playwright test`, or the stack was not started first.",
+    "fix": "Run the tests with `playwright test`, or start the stack before reading the manifest.",
+    "verify": "cd packages/testing && bun run vitest run src/stack/index.test.ts",
+    "source": "src/stack/index.ts:99"
+  }
+]

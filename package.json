@@ -1,0 +1,201 @@
+{
+  "name": "@arki/testing",
+  "version": "0.3.0",
+  "description": "Test tooling for TypeScript backends: testcontainers Postgres and Redis, an integration tester, typed factories, assertions, MSW mocking and AI judges.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arki-labs/arki.git"
+  },
+  "homepage": "https://arki.dev",
+  "bugs": {
+    "url": "https://github.com/arki-labs/arki/issues"
+  },
+  "keywords": [
+    "arki",
+    "typescript",
+    "testing",
+    "vitest",
+    "testcontainers",
+    "msw",
+    "playwright"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./ai": {
+      "types": "./dist/ai/index.d.ts",
+      "import": "./dist/ai/index.js",
+      "default": "./dist/ai/index.js"
+    },
+    "./ai/playwright": {
+      "types": "./dist/ai/playwright.d.ts",
+      "import": "./dist/ai/playwright.js",
+      "default": "./dist/ai/playwright.js"
+    },
+    "./ai/vitest": {
+      "types": "./dist/ai/vitest.d.ts",
+      "import": "./dist/ai/vitest.js",
+      "default": "./dist/ai/vitest.js"
+    },
+    "./assertions": {
+      "types": "./dist/assertions.d.ts",
+      "import": "./dist/assertions.js",
+      "default": "./dist/assertions.js"
+    },
+    "./containers": {
+      "types": "./dist/containers.d.ts",
+      "import": "./dist/containers.js",
+      "default": "./dist/containers.js"
+    },
+    "./debug": {
+      "types": "./dist/debug.d.ts",
+      "import": "./dist/debug.js",
+      "default": "./dist/debug.js"
+    },
+    "./factories": {
+      "types": "./dist/factories.d.ts",
+      "import": "./dist/factories.js",
+      "default": "./dist/factories.js"
+    },
+    "./e2e": {
+      "types": "./dist/e2e/index.d.ts",
+      "import": "./dist/e2e/index.js",
+      "default": "./dist/e2e/index.js"
+    },
+    "./services/http-fixtures": {
+      "types": "./dist/services/http-fixtures.d.ts",
+      "import": "./dist/services/http-fixtures.js",
+      "default": "./dist/services/http-fixtures.js"
+    },
+    "./services/mailpit": {
+      "types": "./dist/services/mailpit.d.ts",
+      "import": "./dist/services/mailpit.js",
+      "default": "./dist/services/mailpit.js"
+    },
+    "./services/ollama": {
+      "types": "./dist/services/ollama.d.ts",
+      "import": "./dist/services/ollama.js",
+      "default": "./dist/services/ollama.js"
+    },
+    "./services/postgres": {
+      "types": "./dist/services/postgres.d.ts",
+      "import": "./dist/services/postgres.js",
+      "default": "./dist/services/postgres.js"
+    },
+    "./services/redis": {
+      "types": "./dist/services/redis.d.ts",
+      "import": "./dist/services/redis.js",
+      "default": "./dist/services/redis.js"
+    },
+    "./stack": {
+      "types": "./dist/stack/index.d.ts",
+      "import": "./dist/stack/index.js",
+      "default": "./dist/stack/index.js"
+    },
+    "./stack/contract": {
+      "types": "./dist/stack/contract.d.ts",
+      "import": "./dist/stack/contract.js",
+      "default": "./dist/stack/contract.js"
+    },
+    "./server/integration-tester": {
+      "types": "./dist/integration-tester.d.ts",
+      "import": "./dist/integration-tester.js",
+      "default": "./dist/integration-tester.js"
+    },
+    "./msw": {
+      "types": "./dist/msw.d.ts",
+      "import": "./dist/msw.js",
+      "default": "./dist/msw.js"
+    },
+    "./performance": {
+      "types": "./dist/performance.d.ts",
+      "import": "./dist/performance.js",
+      "default": "./dist/performance.js"
+    },
+    "./server/tester-builder": {
+      "types": "./dist/tester-builder.d.ts",
+      "import": "./dist/tester-builder.js",
+      "default": "./dist/tester-builder.js"
+    },
+    "./timestamps": {
+      "types": "./dist/timestamps.d.ts",
+      "import": "./dist/timestamps.js",
+      "default": "./dist/timestamps.js"
+    },
+    "./vitest-setup": {
+      "types": "./dist/vitest-setup.d.ts",
+      "import": "./dist/vitest-setup.js",
+      "default": "./dist/vitest-setup.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**",
+    "src/**",
+    "!src/**/*.test.ts",
+    "!src/**/*.spec.ts",
+    "!src/**/__fixtures__/**",
+    "!src/**/*.calibration.test.ts",
+    "docs/agent-guide.md",
+    "docs/*.md",
+    "docs/recipes/**",
+    "llms.txt",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "dependencies": {
+    "@arki/date": "0.5.0",
+    "@arki/db": "0.5.1",
+    "@arki/failure": "0.3.0",
+    "@arki/kv": "0.5.0",
+    "@arki/log": "0.4.0",
+    "@arki/schema": "0.3.0",
+    "@faker-js/faker": "^10.6.0",
+    "drizzle-orm": "1.0.0-rc.4",
+    "pg": "8.23.1"
+  },
+  "peerDependencies": {
+    "@arki/auth": "^0.4.0",
+    "@playwright/test": "^1.64.0",
+    "@testcontainers/postgresql": "^12.2.0",
+    "@testcontainers/redis": "^12.2.0",
+    "msw": "^2.15.0",
+    "testcontainers": "^12.2.1",
+    "vitest": "^5.0.3"
+  },
+  "peerDependenciesMeta": {
+    "@arki/auth": {
+      "optional": true
+    },
+    "@playwright/test": {
+      "optional": true
+    },
+    "@testcontainers/postgresql": {
+      "optional": true
+    },
+    "@testcontainers/redis": {
+      "optional": true
+    },
+    "msw": {
+      "optional": true
+    },
+    "testcontainers": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22.10"
+  }
+}
