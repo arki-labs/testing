@@ -72,6 +72,10 @@ type TestFixtures<TUser, TFactories> = {
     actingAs(user?: {
         readonly email?: string;
     }): Promise<Actor<TUser>>;
+    /**
+     * Posts to `/api/cron/<name>` with the stack's cron secret. Throws `CRON_FAILED` for a status that is not
+     * ok and `CRON_BAD_BODY` for an answer that is not JSON (an empty answer is `null`).
+     */
     cron: {
         run(name: string): Promise<CronRun>;
     };

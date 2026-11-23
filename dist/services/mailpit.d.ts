@@ -21,7 +21,8 @@ export type Mailbox = {
     all(to?: string): Promise<readonly MailSummary[]>;
     /**
      * Waits until a mail to `to` whose subject matches arrives, and returns it in full.
-     * Polls Mailpit; on timeout the error lists what Mailpit does hold (MAIL_NOT_RECEIVED).
+     * Polls Mailpit; on timeout the error lists what Mailpit does hold (MAIL_NOT_RECEIVED). `timeoutMs`
+     * (default 30 000) is finite and at least 0, or the invariant failure `ARKI_FAILURE_E008` is thrown.
      */
     waitFor(match: {
         readonly to: string;

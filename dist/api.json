@@ -1,6 +1,6 @@
 {
   "package": "@arki/testing",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "entries": [
     {
       "subpath": ".",
@@ -83,7 +83,7 @@
       "subpath": ".",
       "name": "assertPaginationValid",
       "kind": "function",
-      "signature": "export declare function assertPaginationValid(response: unknown, options?: { itemsCount?: number; total?: number; hasMore?: boolean; itemSchema?: StandardSchemaV1; }): asserts response is { items: unknown[]; total?: number; nextCursor?: string | null; hasMore?: boolean; };",
+      "signature": "export declare function assertPaginationValid(response: unknown, options?: { itemsCount?: number; total?: number; hasMore?: boolean; itemSchema?: StandardSchemaV1; }): asserts response is PaginatedResponse;",
       "jsdocSummary": "Assert that a pagination response is valid"
     },
     {
@@ -140,7 +140,7 @@
       "name": "createDebugContext",
       "kind": "function",
       "signature": "export declare function createDebugContext(context: string): { log: (message: string, ...args: unknown[]) => void; query: (query: string, params?: readonly unknown[]) => void; state: (label: string, state: unknown) => void; section: (label: string) => void; };",
-      "jsdocSummary": "Create a scoped debug context"
+      "jsdocSummary": "Create a scoped debug context. Its `state` writes the value like {@link logState}: never throws on it."
     },
     {
       "subpath": ".",
@@ -329,7 +329,7 @@
       "name": "logState",
       "kind": "function",
       "signature": "export declare function logState(label: string, state: unknown): void;",
-      "jsdocSummary": "Log the current state of an object"
+      "jsdocSummary": "Log the current state of an object, as indented JSON. Never throws on the state: a bigint prints as `12n`, and a value JSON cannot hold (a cycle) prints as its tag, such as `[object Object]`."
     },
     {
       "subpath": ".",
@@ -344,6 +344,13 @@
       "kind": "function",
       "signature": "export declare function measureQuery<TSchema extends AnyRelations, T>(db: NodePgDatabase<TSchema>, queryFn: (db: NodePgDatabase<TSchema>) => Promise<T>, label?: string): Promise<{ result: T; durationMs: number; }>;",
       "jsdocSummary": "Measure database query execution time"
+    },
+    {
+      "subpath": ".",
+      "name": "PaginatedResponse",
+      "kind": "type",
+      "signature": "export type PaginatedResponse = { items: unknown[]; total?: number | undefined; nextCursor?: string | null | undefined; hasMore?: boolean | undefined; };",
+      "jsdocSummary": "A page of results: what {@link assertPaginationValid} narrows a response to."
     },
     {
       "subpath": ".",
@@ -363,7 +370,7 @@
       "subpath": ".",
       "name": "Timestamp",
       "kind": "type",
-      "signature": "export type Timestamp = Date | Timeline;",
+      "signature": "export type Timestamp = Date | Temporal.Instant | Temporal.ZonedDateTime;",
       "jsdocSummary": "A moment in time: a `Date`, or a Temporal `Instant` or `ZonedDateTime`."
     },
     {
@@ -398,7 +405,7 @@
       "subpath": "./ai",
       "name": "createEmbedder",
       "kind": "function",
-      "signature": "export declare function createEmbedder(options: { readonly url?: string; readonly model: string; /** How long an embed call may take before it is `OllamaUnavailable`. Default 120 000. */ readonly timeoutMs?: number; }): Promise<Embedder>;",
+      "signature": "export declare function createEmbedder(options: { readonly url?: string; readonly model: string; /** * How long an embed call may take before it is `OllamaUnavailable`. Default 120 000. A whole number of * milliseconds from 1 to 2^31 - 1, or the invariant failure `ARKI_FAILURE_E008`. */ readonly timeoutMs?: number; }): Promise<Embedder>;",
       "jsdocSummary": ""
     },
     {
@@ -454,7 +461,7 @@
       "subpath": "./ai",
       "name": "JudgeOptions",
       "kind": "type",
-      "signature": "export type JudgeOptions = { /** Default `http://127.0.0.1:11434`. */ readonly url?: string; readonly model: string; /** The model the AI under test runs on. A judge with the same digest is refused. */ readonly target?: string; /** Let the judge be the model under test. It grades its own work more kindly; say so in the test. */ readonly allowSameModelAsJudge?: boolean; /** Default 7. */ readonly seed?: number; /** Tokens the judge may write per call. Default 1500. */ readonly maxTokens?: number; /** How long a chat or embed call may take before it is `OllamaUnavailable`. Default 120 000. */ readonly timeoutMs?: number; };",
+      "signature": "export type JudgeOptions = { /** Default `http://127.0.0.1:11434`. */ readonly url?: string; readonly model: string; /** The model the AI under test runs on. A judge with the same digest is refused. */ readonly target?: string; /** Let the judge be the model under test. It grades its own work more kindly; say so in the test. */ readonly allowSameModelAsJudge?: boolean; /** Default 7. A safe integer, or `createJudge` throws the invariant failure `ARKI_FAILURE_E008`. */ readonly seed?: number; /** Tokens the judge may write per call. Default 1500. A whole number of at least 1, or the invariant failure. */ readonly maxTokens?: number; /** * How long a chat or embed call may take before it is `OllamaUnavailable`. Default 120 000. A whole number * of milliseconds from 1 to 2^31 - 1, or the invariant failure. */ readonly timeoutMs?: number; };",
       "jsdocSummary": ""
     },
     {
@@ -559,15 +566,8 @@
       "subpath": "./ai",
       "name": "Verdict",
       "kind": "type",
-      "signature": "export type Verdict = { readonly pass: boolean; readonly reason: string; };",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./ai/playwright",
-      "name": "expect",
-      "kind": "variable",
-      "signature": "export declare const expect: import(\"@playwright/test\").Expect<{ toScore<TOutput, TInput = unknown, TExpected = unknown>(received: TOutput, scorer: Scorer<TOutput, TInput, TExpected>, options?: ScoreOptions<TInput, TExpected>): Promise<{ pass: boolean; message: () => string; name: string; }>; }>;",
-      "jsdocSummary": ""
+      "signature": "export type Verdict = { pass: boolean; reason: string; };",
+      "jsdocSummary": "The judge's verdict: whether the answer passes, and why."
     },
     {
       "subpath": "./ai/vitest",
@@ -671,7 +671,7 @@
       "subpath": "./assertions",
       "name": "assertPaginationValid",
       "kind": "function",
-      "signature": "export declare function assertPaginationValid(response: unknown, options?: { itemsCount?: number; total?: number; hasMore?: boolean; itemSchema?: StandardSchemaV1; }): asserts response is { items: unknown[]; total?: number; nextCursor?: string | null; hasMore?: boolean; };",
+      "signature": "export declare function assertPaginationValid(response: unknown, options?: { itemsCount?: number; total?: number; hasMore?: boolean; itemSchema?: StandardSchemaV1; }): asserts response is PaginatedResponse;",
       "jsdocSummary": "Assert that a pagination response is valid"
     },
     {
@@ -680,6 +680,13 @@
       "kind": "function",
       "signature": "export declare function assertTimestampRecent(timestamp: unknown, options?: { withinSeconds?: number; label?: string; }): asserts timestamp is Timestamp;",
       "jsdocSummary": "Assert that a timestamp is recent (within specified seconds)"
+    },
+    {
+      "subpath": "./assertions",
+      "name": "PaginatedResponse",
+      "kind": "type",
+      "signature": "export type PaginatedResponse = { items: unknown[]; total?: number | undefined; nextCursor?: string | null | undefined; hasMore?: boolean | undefined; };",
+      "jsdocSummary": "A page of results: what {@link assertPaginationValid} narrows a response to."
     },
     {
       "subpath": "./containers",
@@ -745,6 +752,104 @@
       "jsdocSummary": ""
     },
     {
+      "subpath": "./containers/mailpit",
+      "name": "mailbox",
+      "kind": "function",
+      "signature": "export declare function mailbox(httpUrl: string): Mailbox;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers/mailpit",
+      "name": "Mailbox",
+      "kind": "type",
+      "signature": "export type Mailbox = { /** Mails to `to` (an exact address) or all mails when omitted. Oldest first. */ all(to?: string): Promise<readonly MailSummary[]>; /** * Waits until a mail to `to` whose subject matches arrives, and returns it in full. * Polls Mailpit; on timeout the error lists what Mailpit does hold (MAIL_NOT_RECEIVED). `timeoutMs` * (default 30 000) is finite and at least 0, or the invariant failure `ARKI_FAILURE_E008` is thrown. */ waitFor(match: { readonly to: string; readonly subject?: string | RegExp; readonly timeoutMs?: number; }): Promise<ReceivedMail>; /** Deletes the mails to `to`, or every mail when omitted. */ clear(to?: string): Promise<void>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers/mailpit",
+      "name": "mailpit",
+      "kind": "variable",
+      "signature": "export declare const mailpit: (options?: { readonly image?: string; }) => import(\"../stack/index.js\").ServiceSpec<null, MailpitWorker>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers/mailpit",
+      "name": "MailpitWorker",
+      "kind": "type",
+      "signature": "export type MailpitWorker = { readonly httpUrl: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers/mailpit",
+      "name": "MailSummary",
+      "kind": "type",
+      "signature": "export type MailSummary = { readonly id: string; readonly subject: string; readonly to: readonly string[]; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers/mailpit",
+      "name": "ReceivedMail",
+      "kind": "type",
+      "signature": "export type ReceivedMail = MailSummary & { readonly text: string; readonly html: string; /** Every `http(s)` link in the HTML part, in order. */ links(): readonly string[]; };",
+      "jsdocSummary": "One mail, read in full."
+    },
+    {
+      "subpath": "./containers/postgres",
+      "name": "postgres",
+      "kind": "variable",
+      "signature": "export declare const postgres: (options: PostgresOptions) => import(\"../stack/index.js\").ServiceSpec<PostgresRun, PostgresWorker>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers/postgres",
+      "name": "PostgresOptions",
+      "kind": "type",
+      "signature": "export type PostgresOptions = { /** Default `postgres:17-alpine`. */ readonly image?: string; /** Builds the app's schema in the template. `url` points at the template; it runs once per run. */ readonly buildSchema: (url: string) => Promise<void>; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers/postgres",
+      "name": "PostgresRun",
+      "kind": "type",
+      "signature": "export type PostgresRun = { readonly adminUrl: string; readonly templateDb: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers/postgres",
+      "name": "PostgresWorker",
+      "kind": "type",
+      "signature": "export type PostgresWorker = { readonly url: string; readonly database: string; };",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers/postgres",
+      "name": "truncateAll",
+      "kind": "function",
+      "signature": "export declare function truncateAll(url: string): Promise<void>;",
+      "jsdocSummary": "Empties every table in `url`, restarting identities. Use between tests that share a worker."
+    },
+    {
+      "subpath": "./containers/redis",
+      "name": "flushRedis",
+      "kind": "function",
+      "signature": "export declare function flushRedis(url: string): Promise<void>;",
+      "jsdocSummary": "Empties every key of the Redis at `url` (`FLUSHALL`), so one test's keys never reach the next."
+    },
+    {
+      "subpath": "./containers/redis",
+      "name": "redis",
+      "kind": "variable",
+      "signature": "export declare const redis: (options?: { readonly image?: string; }) => import(\"../stack/index.js\").ServiceSpec<null, RedisWorker>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./containers/redis",
+      "name": "RedisWorker",
+      "kind": "type",
+      "signature": "export type RedisWorker = { readonly url: string; };",
+      "jsdocSummary": ""
+    },
+    {
       "subpath": "./debug",
       "name": "configureDebug",
       "kind": "function",
@@ -756,7 +861,7 @@
       "name": "createDebugContext",
       "kind": "function",
       "signature": "export declare function createDebugContext(context: string): { log: (message: string, ...args: unknown[]) => void; query: (query: string, params?: readonly unknown[]) => void; state: (label: string, state: unknown) => void; section: (label: string) => void; };",
-      "jsdocSummary": "Create a scoped debug context"
+      "jsdocSummary": "Create a scoped debug context. Its `state` writes the value like {@link logState}: never throws on it."
     },
     {
       "subpath": "./debug",
@@ -833,7 +938,7 @@
       "name": "logState",
       "kind": "function",
       "signature": "export declare function logState(label: string, state: unknown): void;",
-      "jsdocSummary": "Log the current state of an object"
+      "jsdocSummary": "Log the current state of an object, as indented JSON. Never throws on the state: a bigint prints as `12n`, and a value JSON cannot hold (a cycle) prints as its tag, such as `[object Object]`."
     },
     {
       "subpath": "./debug",
@@ -841,132 +946,6 @@
       "kind": "function",
       "signature": "export declare function timeOperation(label: string): { end: () => void; };",
       "jsdocSummary": "Create a timing tracker for measuring execution time"
-    },
-    {
-      "subpath": "./e2e",
-      "name": "Actor",
-      "kind": "type",
-      "signature": "export type Actor<TUser> = { readonly email: string; readonly user: TUser; readonly page: Page; readonly mail: { /** Waits for a mail to this actor. */ waitFor(match?: { readonly subject?: string | RegExp; readonly timeoutMs?: number; }): Promise<ReceivedMail>; all(): Promise<readonly MailSummary[]>; clear(): Promise<void>; }; };",
-      "jsdocSummary": "One person in a test: a signed-in browser page and a view of their own mail."
-    },
-    {
-      "subpath": "./e2e",
-      "name": "BootableApp",
-      "kind": "type",
-      "signature": "export type BootableApp<TServices> = { boot(): Promise<{ readonly services: TServices; dispose(): Promise<void>; }>; };",
-      "jsdocSummary": "What a test needs from an app: boot the graph, read its services, dispose it."
-    },
-    {
-      "subpath": "./e2e",
-      "name": "CronRun",
-      "kind": "type",
-      "signature": "export type CronRun = { readonly status: number; readonly body: unknown; };",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./e2e",
-      "name": "e2eConfig",
-      "kind": "function",
-      "signature": "export declare function e2eConfig(options: E2EConfigOptions): PlaywrightTestConfig;",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./e2e",
-      "name": "E2EConfigOptions",
-      "kind": "type",
-      "signature": "export type E2EConfigOptions = { /** Path to the app's `globalSetup` file, which default-exports `stackSetup(stack, ...)`. */ readonly globalSetup: string; /** Policy from `tooling/playwright`, spread under the stack-specific settings. */ readonly policy?: PlaywrightTestConfig; readonly testDir?: string; /** Which files are specs. Default Playwright's `*.spec.ts`. */ readonly testMatch?: PlaywrightTestConfig['testMatch']; /** Time for one test. Default 3 minutes. */ readonly testTimeoutMs?: number; };",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./e2e",
-      "name": "E2EOptions",
-      "kind": "type",
-      "signature": "export type E2EOptions<M extends E2EServices, TServices, TUser, TFactories> = { readonly stack: Stack<M>; /** A loader, so the app's env is set before its modules read it. */ readonly app: () => Promise<BootableApp<TServices>>; readonly auth: (services: TServices) => TestAuth<TUser>; readonly serve: ServerOptions['serve']; readonly factories: (services: TServices) => TFactories; /** The env name of the cron secret. Default `CRON_SECRET`. */ readonly cronSecretEnv?: string; };",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./e2e",
-      "name": "E2EServices",
-      "kind": "type",
-      "signature": "export type E2EServices = Readonly<Record<string, ServiceSpec<Json, Json>>> & { readonly mailpit: ServiceSpec<null, MailpitWorker>; };",
-      "jsdocSummary": "A stack the e2e layer can use: it must have a `mailpit` service."
-    },
-    {
-      "subpath": "./e2e",
-      "name": "e2eTest",
-      "kind": "function",
-      "signature": "export declare function e2eTest<M extends E2EServices, TServices, TUser, TFactories>(options: E2EOptions<M, TServices, TUser, TFactories>): { test: TestType<import(\"@playwright/test\").PlaywrightTestArgs & import(\"@playwright/test\").PlaywrightTestOptions & TestFixtures<TUser, TFactories>, import(\"@playwright/test\").PlaywrightWorkerArgs & import(\"@playwright/test\").PlaywrightWorkerOptions & WorkerFixtures<M, TServices>>; expect: import(\"@playwright/test\").Expect<{ toScore<TOutput, TInput = unknown, TExpected = unknown>(received: TOutput, scorer: import(\"../ai/score.js\").Scorer<TOutput, TInput, TExpected>, options?: import(\"../ai/matcher.js\").ScoreOptions<TInput, TExpected>): Promise<{ pass: boolean; message: () => string; name: string; }>; }>; story: { (id: string, title: string, body: StoryBody<import(\"@playwright/test\").PlaywrightTestArgs & import(\"@playwright/test\").PlaywrightTestOptions & TestFixtures<TUser, TFactories>, import(\"@playwright/test\").PlaywrightWorkerArgs & import(\"@playwright/test\").PlaywrightWorkerOptions & WorkerFixtures<M, TServices>>): void; (id: string, title: string, details: { readonly tag: string; }, body: StoryBody<import(\"@playwright/test\").PlaywrightTestArgs & import(\"@playwright/test\").PlaywrightTestOptions & TestFixtures<TUser, TFactories>, import(\"@playwright/test\").PlaywrightWorkerArgs & import(\"@playwright/test\").PlaywrightWorkerOptions & WorkerFixtures<M, TServices>>): void; }; };",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./e2e",
-      "name": "ensureBuilt",
-      "kind": "function",
-      "signature": "export declare function ensureBuilt(build: ServerOptions['build']): Promise<boolean>;",
-      "jsdocSummary": "Builds the app unless the sources are unchanged since the last build. Returns whether it built."
-    },
-    {
-      "subpath": "./e2e",
-      "name": "holdRequests",
-      "kind": "function",
-      "signature": "export declare function holdRequests(page: Page, paths: readonly string[]): Promise<RequestHold>;",
-      "jsdocSummary": "Delay the real response of every request whose URL contains one of `paths`, to look at a loading state. The request is only sent to the real server after `release`, so nothing is faked, answered or aborted. Other requests are untouched. Call it before `page.goto`. A hold that is never released ends with the page."
-    },
-    {
-      "subpath": "./e2e",
-      "name": "Isolation",
-      "kind": "type",
-      "signature": "export type Isolation = 'shared' | 'fresh';",
-      "jsdocSummary": "What a test shares with the ones before it on the same worker. `shared` (default): the worker's database, mail and keys as the last test left them. `fresh`: every table emptied, mail and keys flushed before the test starts. Use it for a test that runs work over everything in the database (a global cron), whose outcome would otherwise depend on the tests that ran before it. Set it with `test.use({ isolation: 'fresh' })`."
-    },
-    {
-      "subpath": "./e2e",
-      "name": "RequestHold",
-      "kind": "type",
-      "signature": "export type RequestHold = { /** Resolves once a held request has arrived, so a test knows the page is really waiting. */ readonly arrived: Promise<void>; /** Lets every held request (and every later one) through to the real server. */ release(): Promise<void>; };",
-      "jsdocSummary": "A hold on requests to the app: they wait at the browser until `release`, then go to the real server."
-    },
-    {
-      "subpath": "./e2e",
-      "name": "SERVER_ROOT_ENV_KEY",
-      "kind": "variable",
-      "signature": "export declare const SERVER_ROOT_ENV_KEY = \"ARKI_SERVER_ROOT\";",
-      "jsdocSummary": "The env name of the folder this run's servers start in. Read it where `serve.cwd` is written."
-    },
-    {
-      "subpath": "./e2e",
-      "name": "ServerOptions",
-      "kind": "type",
-      "signature": "export type ServerOptions = { readonly build: { /** For example `['bun', 'run', 'build']`. */ readonly command: readonly [string, ...string[]]; readonly cwd: string; /** Files and folders whose change means the build is stale. */ readonly inputs: readonly string[]; /** A file the build writes; the build is skipped when it is newer than the inputs' hash. */ readonly output: string; }; readonly serve: { /** For example `['bun', '.output/server/index.mjs']`. */ readonly command: readonly [string, ...string[]]; readonly cwd: string; /** A path that answers 200 once the server is ready. */ readonly readyPath: string; }; };",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./e2e",
-      "name": "stackSetup",
-      "kind": "function",
-      "signature": "export declare function stackSetup<M extends ServiceMap>(stack: Stack<M>, options: Pick<ServerOptions, 'build'>): () => Promise<() => Promise<void>>;",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./e2e",
-      "name": "StoryBody",
-      "kind": "type",
-      "signature": "export type StoryBody<TArgs extends object, WArgs extends object> = (args: TArgs & WArgs, testInfo: TestInfo) => Promise<void> | void;",
-      "jsdocSummary": "What a story body receives from a test built by `e2eTest`, plus whatever the app added with `extend`."
-    },
-    {
-      "subpath": "./e2e",
-      "name": "storyFor",
-      "kind": "function",
-      "signature": "export declare function storyFor<TArgs extends object, WArgs extends object>(test: TestType<TArgs, WArgs>): { (id: string, title: string, body: StoryBody<TArgs, WArgs>): void; (id: string, title: string, details: { readonly tag: string; }, body: StoryBody<TArgs, WArgs>): void; };",
-      "jsdocSummary": "`story(id, title, body)` for any Playwright test, including one an app extended with its own fixtures. The title starts with the id, so the report and the PRD agree."
-    },
-    {
-      "subpath": "./e2e",
-      "name": "TestAuth",
-      "kind": "type",
-      "signature": "export type TestAuth<TUser> = { readonly testing: { signIn(user: { readonly email: string; }): Promise<{ readonly headers: Headers; readonly user: TUser; }>; }; };",
-      "jsdocSummary": "The sign-in seam of `@arki/auth`: a real session, as headers that carry its cookie."
     },
     {
       "subpath": "./factories",
@@ -1137,6 +1116,27 @@
       "jsdocSummary": "Policy for handling requests that match no registered handler."
     },
     {
+      "subpath": "./otel",
+      "name": "CapturedSpan",
+      "kind": "type",
+      "signature": "export type CapturedSpan = ReadableSpan & { /** The finished span this span was started under, or `undefined` for a root span or a parent that has not ended. */ readonly parent: CapturedSpan | undefined; };",
+      "jsdocSummary": "A finished span as the SDK exported it, plus its finished parent."
+    },
+    {
+      "subpath": "./otel",
+      "name": "captureSpans",
+      "kind": "function",
+      "signature": "export declare function captureSpans(): { /** Every finished span, in the order they ended. */ readonly finished: readonly CapturedSpan[]; /** * The one finished span called `name`. Throws, failing the test, when none or several have that name; * the message lists every finished span. */ named(name: string): CapturedSpan; /** The finished spans started directly under `span`, in the order they ended. `span` may still be open. */ childrenOf(span: Pick<Span, 'spanContext'>): readonly CapturedSpan[]; /** * Collects every metric recorded since the capture started (or since `reset()`), as cumulative * values. Throws when an observable instrument's callback failed during collection. */ collectMetrics(): Promise<readonly MetricData[]>; /** * Forgets the finished spans and starts a fresh meter provider, so later reads see only what * happens next. An instrument created before `reset()` keeps writing to the old provider. */ reset(): void; /** Restores the tracer and meter providers registered before the capture, and removes its context manager. */ [Symbol.dispose](): void; };",
+      "jsdocSummary": "Installs an in-memory tracer provider and meter provider as the OpenTelemetry globals for one test, and an `AsyncLocalStorage` context manager when none is registered. Disposing the capture restores the providers that were registered before, so `using spans = captureSpans()` scopes it to a block."
+    },
+    {
+      "subpath": "./otel",
+      "name": "SpanCapture",
+      "kind": "type",
+      "signature": "export type SpanCapture = ReturnType<typeof captureSpans>;",
+      "jsdocSummary": "The capture `captureSpans()` returns."
+    },
+    {
       "subpath": "./performance",
       "name": "assertPerformance",
       "kind": "function",
@@ -1186,102 +1186,137 @@
       "jsdocSummary": "Performance measurement result"
     },
     {
-      "subpath": "./server/integration-tester",
-      "name": "CreateCallerArgs",
+      "subpath": "./playwright",
+      "name": "Actor",
       "kind": "type",
-      "signature": "export type CreateCallerArgs<TContext> = { context: TContext; role: TestUserRole; user: TestUser | null; responseHeaders: Headers; };",
+      "signature": "export type Actor<TUser> = { readonly email: string; readonly user: TUser; readonly page: Page; readonly mail: { /** Waits for a mail to this actor. */ waitFor(match?: { readonly subject?: string | RegExp; readonly timeoutMs?: number; }): Promise<ReceivedMail>; all(): Promise<readonly MailSummary[]>; clear(): Promise<void>; }; };",
+      "jsdocSummary": "One person in a test: a signed-in browser page and a view of their own mail."
+    },
+    {
+      "subpath": "./playwright",
+      "name": "BootableApp",
+      "kind": "type",
+      "signature": "export type BootableApp<TServices> = { boot(): Promise<{ readonly services: TServices; dispose(): Promise<void>; }>; };",
+      "jsdocSummary": "What a test needs from an app: boot the graph, read its services, dispose it."
+    },
+    {
+      "subpath": "./playwright",
+      "name": "CronRun",
+      "kind": "type",
+      "signature": "export type CronRun = { readonly status: number; readonly body: unknown; };",
       "jsdocSummary": ""
     },
     {
-      "subpath": "./server/integration-tester",
-      "name": "IntegrationTester",
-      "kind": "class",
-      "signature": "export declare class IntegrationTester<TSchema extends Record<string, unknown>, TDatabase extends THandle, TRepositories extends Record<string, unknown>, TCaller, TContext extends Record<string, unknown>, THandle extends TesterDatabase<THandle>> { protected readonly config: IntegrationTesterConfig<TSchema, TDatabase, TRepositories, TCaller, TContext, THandle>; protected readonly options: TesterOptions; protected container: StartedPostgreSqlContainer | null; protected ownsContainer: boolean; protected baseConnectionString: string | null; protected uniqueDatabaseName: string | null; protected redisContainer: StartedTestContainer | null; protected ownsRedisContainer: boolean; protected redisNamespace: string | null; protected _db: TDatabase | null; protected _repo: TRepositories | null; protected _kv: KV | null; protected _users: TesterUsers | null; protected _baseContext: TContext | null; protected currentTransaction: THandle | null; protected randomCounter: number; protected randomSeed: string; protected currentUser: TestUser | null; protected currentCaller: TCaller | null; /** * Access to assertion utilities */ readonly assert: typeof assertions; /** * Access to debug utilities */ readonly debug: typeof debug; /** * Access to performance utilities */ readonly performance: typeof performance; /** * Access to faker instance for custom data generation */ readonly faker: import(\"@faker-js/faker\").Faker; constructor(config: IntegrationTesterConfig<TSchema, TDatabase, TRepositories, TCaller, TContext, THandle>, options?: TesterOptions); get db(): TDatabase; /** * Get the current database context (transaction if active, otherwise base db) * This ensures operations use the transaction when running inside withTransaction() */ protected getCurrentDb(): THandle; /** * Repositories on the current database: the test transaction while `withTransaction` is * running, the base database otherwise. So a read through `repo` sees what a caller wrote * in the same transaction. Read it inside the transaction; a value kept from before it * still uses the base database. */ get repo(): TRepositories; /** * The database callers and `repo` use right now: the test transaction while `withTransaction` * is running, the root database otherwise. Use it to check what a caller wrote in the * transaction. (`db` is always the root database, so it cannot see uncommitted rows.) */ get currentDb(): THandle; get kv(): KV; get users(): TesterUsers; /** * Callers for every role. Each property builds its caller when you read it, on the current * database: the test transaction while `withTransaction` is running, the base database * otherwise. Read it inside the transaction; a caller you kept from before it still writes * on the base database. */ get caller(): CallerCollection<TCaller>; get currentTx(): THandle | null; getUser(role: 'user' | 'moderator' | 'admin'): TestUser; setup(): Promise<void>; teardown(): Promise<void>; /** * Clear specific tables by deleting all rows * * @param tables - Tables to clear * * @example * ```typescript * await tester.clearTables(users, games, sessions); * ``` */ clearTables(...tables: PgTable[]): Promise<void>; /** * Clear all tables in the schema * * @example * ```typescript * await tester.clearAllTables(); * ``` */ clearAllTables(): Promise<void>; /** * Clear tables matching a pattern * * @param pattern - RegExp or string pattern to match table names * * @example * ```typescript * // Clear all tables starting with 'temp_' * await tester.clearTablesByPattern(/^temp_/); * ``` */ clearTablesByPattern(pattern: RegExp | string): Promise<void>; /** * Clear all tables except specified ones * * @param exceptTables - Tables to preserve * * @example * ```typescript * // Clear all tables except users and settings * await tester.clearTablesExcept(users, settings); * ``` */ clearTablesExcept(...exceptTables: PgTable[]): Promise<void>; /** * Seed the database with test data * * @param data - Object mapping table names to arrays of records * * @example * ```typescript * await tester.seed({ * users: [user1, user2, user3], * games: [game1, game2], * sessions: [session1, session2, session3, session4], * }); * ``` */ seed<T extends Record<string, readonly object[]>>(data: T): Promise<void>; /** * Create a custom caller for a specific user * * @param user - User to create caller for * @returns tRPC caller instance * * @example * ```typescript * const customUser = { id: 'usr_custom', email: 'custom@example.com', name: 'Custom' }; * const caller = tester.createCustomCaller(customUser); * const result = await caller.someMethod(); * ``` */ createCustomCaller(user: TestUser): TCaller; /** * Return the default test user and caller with 'user' role * * @returns Object with user and caller * * @example * ```typescript * const { user, caller } = tester.asUser(); * await caller.someMethod(); * ``` */ asUser(): { user: TestUser; caller: TCaller; }; /** * Create a new dynamic test user with 'user' role and return caller. * This creates a new user in the database via the onUserCreate hook. * Use this when you need multiple different users in a test. * * @returns Promise with user and caller * * @example * ```typescript * const { user: player1, caller: caller1 } = await tester.createUser(); * const { user: player2, caller: caller2 } = await tester.createUser(); * ``` */ createUser(): Promise<{ user: TestUser; caller: TCaller; }>; /** * Create a guest (unauthenticated) caller * * @returns Caller without authentication * * @example * ```typescript * const caller = tester.asGuest(); * await caller.public.getPublicData(); * ``` */ asGuest(): TCaller; /** * Return the default test user and caller with 'moderator' role * * @returns Object with moderator user and caller * * @example * ```typescript * const { user, caller } = tester.asModerator(); * await caller.moderation.reviewContent(); * ``` */ asModerator(): { user: TestUser; caller: TCaller; }; /** * Return the default test user and caller with 'admin' role * * @returns Object with admin user and caller * * @example * ```typescript * const { user, caller } = tester.asAdmin(); * await caller.admin.deleteUser(); * ``` */ asAdmin(): { user: TestUser; caller: TCaller; }; /** * Switch context to a different user and return caller * * @param userId - User ID to switch to * @returns Caller for the specified user * * @example * ```typescript * const { user: user1 } = tester.asUser(); * const { user: user2 } = tester.asUser(); * const caller1 = tester.withUser(user1.id); * await caller1.someMethod(); * ``` */ withUser(userId: UserId): TCaller; /** * Get the current user in the test context * * @returns Current test user or null if unauthenticated * * @example * ```typescript * const { user } = tester.asUser(); * const currentUser = tester.getCurrentUser(); * expect(currentUser?.id).toBe(user.id); * ``` */ getCurrentUser(): TestUser | null; /** * Get the current caller * * @returns Current caller instance * @throws Error if no caller is available * * @example * ```typescript * tester.asUser(); * const caller = tester.getCaller(); * await caller.someMethod(); * ``` */ getCaller(): TCaller; /** * Wait for async projections to complete * * In event-sourced systems, projections update asynchronously after events are stored. * This method waits for a short period to allow projections to process. * * @param ms - Milliseconds to wait (default: 100ms) * * @example * ```typescript * await tester.caller.user.createUser({ ... }); * await tester.waitForProjections(); * const user = await tester.caller.user.getUser(); * ``` */ waitForProjections(ms?: number): Promise<void>; /** * Get the current test context with all services */ get context(): TContext; /** * Execute a callback within an auto-rollback transaction * * The transaction is automatically rolled back after the callback completes, * leaving the database in a clean state for the next test. * * @param callback - Async function to execute in transaction * @returns Result of callback (always undefined due to rollback) * * @example * ```typescript * await tester.withTransaction(async () => { * const user = await tester.db.insert(users).values({...}).returning(); * const result = await tester.caller.user.someMethod(); * expect(result).toBeDefined(); * // Transaction automatically rolls back after this * }); * ``` */ withTransaction(callback: () => Promise<unknown>): Promise<void>; /** * Assert that a value is a valid branded ID with the expected prefix * * @param value - Value to check * @param prefix - Expected ID prefix (e.g., 'usr_', 'game_') * @throws Error if value is not a string or doesn't have the correct prefix * * @example * ```typescript * const user = await createUser(); * tester.assertValidId(user.id, 'usr_'); * ``` */ assertValidId(value: unknown, prefix: string): asserts value is string; /** * Assert that an object has valid createdAt and updatedAt timestamps * * Each may be a `Date`, or a Temporal `Instant` or `ZonedDateTime` from `@arki/date`. * * @param obj - Object to check * @throws Error if timestamps are missing or are not one of those types * * @example * ```typescript * const game = await tester.repo.games.create({...}); * tester.assertTimestamps(game); * ``` */ assertTimestamps(obj: unknown): asserts obj is Timestamps; /** * Assert that updatedAt is greater than or equal to createdAt * * @param obj - Object with timestamps * @throws Error if updatedAt is before createdAt * * @example * ```typescript * const game = await tester.repo.games.update(id, {...}); * tester.assertTimestamps(game); * tester.assertUpdatedAfterCreated(game); * ``` */ assertUpdatedAfterCreated(obj: Timestamps): void; /** * Assert that a response has valid pagination structure * * @param response - Response to check * @throws Error if response doesn't have items array * * @example * ```typescript * const result = await tester.caller.user.games.list(); * tester.assertPaginatedResponse(result); * expect(result.items).toHaveLength(10); * ``` */ assertPaginatedResponse(response: unknown): asserts response is { items: unknown[]; total?: number; nextCursor?: string | null; hasMore?: boolean; }; /** * Generate a deterministic URL-safe slug * * @param prefix - Optional prefix for the slug * @returns Generated slug * * @example * ```typescript * const slug = tester.generateSlug(); // 'test-a1b2c3d4' * const slug = tester.generateSlug('game'); // 'game-a1b2c3d4' * ``` */ generateSlug(prefix?: string): string; /** * Generate a deterministic email address * * @param prefix - Optional prefix for the email * @returns Generated email * * @example * ```typescript * const email = tester.generateEmail(); // 'test-a1b2c3d4@example.com' * const email = tester.generateEmail('admin'); // 'admin-a1b2c3d4@example.com' * ``` */ generateEmail(prefix?: string): string; /** * Generate a deterministic URL * * @param path - Optional path component * @returns Generated URL * * @example * ```typescript * const url = tester.generateUrl(); // 'https://example.com/test-a1b2c3d4' * const url = tester.generateUrl('games/chess'); // 'https://example.com/games/chess' * ``` */ generateUrl(path?: string): string; /** * Generate a deterministic random string * * @param length - Length of string (default: 16) * @returns Generated string * * @example * ```typescript * const token = tester.generateString(32); * const code = tester.generateString(6); * ``` */ generateString(length?: number): string; /** * Generate a random phone number * * @param format - Phone format (default: 'US') * @returns Generated phone number * * @example * ```typescript * const phone = tester.generatePhone(); // '+1-555-123-4567' * ``` */ generatePhone(format?: 'US' | 'INTERNATIONAL'): string; /** * Generate a random date within a range * * @param options - Options for date generation * @returns Generated date * * @example * ```typescript * // Date in the past year * const date = tester.generateDate({ past: { years: 1 } }); * * // Date in the next 30 days * const date = tester.generateDate({ future: { days: 30 } }); * * // Date between two dates * const date = tester.generateDate({ * between: { from: new Date('2024-01-01'), to: new Date('2024-12-31') } * }); * ``` */ generateDate(options?: { past?: { years?: number; months?: number; days?: number; }; future?: { years?: number; months?: number; days?: number; }; between?: { from: Timestamp; to: Timestamp; }; }): Date; /** * Generate a random number between min and max (inclusive) * * @param min - Minimum value * @param max - Maximum value * @returns Random number * * @example * ```typescript * const score = tester.generateBetween(0, 100); * const priority = tester.generateBetween(1, 5); * ``` */ generateBetween(min: number, max: number): number; /** * Generate a random value from an enum or array * * @param values - Enum object or array of values * @returns Random value * * @example * ```typescript * enum Status { Active = 'active', Inactive = 'inactive', Pending = 'pending' } * const status = tester.generateFromEnum(Status); * * const role = tester.generateFromEnum(['user', 'admin', 'moderator']); * ``` */ generateFromEnum<T>(values: T[] | Record<string, T>): T; /** * Get the random seed used for generation (for debugging) * * @returns Random seed string */ getRandomSeed(): string; /** * Reset the random counter (useful for creating reproducible sequences within a test) * * @example * ```typescript * tester.resetRandomCounter(); * const email1 = tester.generateEmail(); // Deterministic * tester.resetRandomCounter(); * const email2 = tester.generateEmail(); // Same as email1 * ``` */ resetRandomCounter(): void; protected mergeUsers(overrides?: TesterUserOverrides): TesterUsers; protected createCaller(role: TestUserRole, user: TestUser | null, context: TContext): TCaller; protected buildBaseContext(): TContext; /** * A short-lived connection built from `config.schema`. The tester uses it for what does not * depend on the app's database type: running migrations and creating or dropping the unique * test database. Close it with `closeDatabaseClient`. */ protected openSchemaDatabase(connectionString: string): import(\"drizzle-orm/node-postgres\").NodePgDatabase<import(\"drizzle-orm\").ExtractTablesWithRelations<{}, import(\"drizzle-orm\").ExtractTablesFromSchema<TSchema>>>; /** * Build a caller for `role` on the current database (the test transaction while * `withTransaction` runs, the base database otherwise). */ protected callerFor(role: TestUserRole, user: TestUser | null): TCaller; /** Make `user` the current user and hand out a caller for it. */ protected asRole(role: TestUserRole, user: TestUser): { user: TestUser; caller: TCaller; }; }",
-      "jsdocSummary": "Integration testing helper class providing comprehensive utilities for testing tRPC applications with PostgreSQL and Redis."
-    },
-    {
-      "subpath": "./server/integration-tester",
-      "name": "IntegrationTesterConfig",
-      "kind": "type",
-      "signature": "export type IntegrationTesterConfig<TSchema extends Record<string, unknown>, TDatabase extends THandle, TRepositories, TCaller, TContext, THandle extends TesterDatabase<THandle>> = { schema: TSchema; migrationsFolder: string; /** * Open the app's database on `connectionString`. `TDatabase`, the type of `tester.db`, is * whatever this returns. Build it the way the app does in production (same relations), so * relational queries work in tests. The tester ends its `$client` pool on teardown. */ createDatabase(connectionString: string): TDatabase; createContext(params: { db: THandle; repo: TRepositories; kv: KV | null; connectionString: string; }): TContext; createCaller(args: CreateCallerArgs<TContext>): TCaller; createRepositories(db: THandle): TRepositories; defaultUsers: TesterUsers; /** * Optional hook called after a test user is created. * Use this to perform additional setup like creating related records. */ onUserCreate?: (params: { user: TestUser; context: TContext; }) => Promise<void>; /** * Optional hook called during setup after database and context are ready, * but before default callers are created. * Use this to create default users in the database (via auth system). */ onSetup?: (params: { context: TContext; users: TesterUsers; }) => Promise<void>; };",
+      "subpath": "./playwright",
+      "name": "e2eConfig",
+      "kind": "function",
+      "signature": "export declare function e2eConfig(options: E2EConfigOptions): PlaywrightTestConfig;",
       "jsdocSummary": ""
     },
     {
-      "subpath": "./server/integration-tester",
-      "name": "TesterDatabase",
+      "subpath": "./playwright",
+      "name": "E2EConfigOptions",
       "kind": "type",
-      "signature": "export type TesterDatabase<THandle> = { transaction<TResult>(callback: (tx: THandle) => Promise<TResult>): Promise<TResult>; } & PgAsyncDatabase<NodePgQueryResultHKT, AnyRelations>;",
-      "jsdocSummary": "What the tester needs from the app's database handle type."
-    },
-    {
-      "subpath": "./server/integration-tester",
-      "name": "TesterOptions",
-      "kind": "type",
-      "signature": "export type TesterOptions = { users?: TesterUserOverrides; autoRollback?: boolean; randomSeed?: string; connectionString?: string; useUniqueDatabase?: boolean; redisConnectionString?: string; useUniqueRedisNamespace?: boolean; };",
+      "signature": "export type E2EConfigOptions = { /** Path to the app's `globalSetup` file, which default-exports `stackSetup(stack, ...)`. */ readonly globalSetup: string; /** Policy from `tooling/playwright`, spread under the stack-specific settings. */ readonly policy?: PlaywrightTestConfig; readonly testDir?: string; /** Which files are specs. Default Playwright's `*.spec.ts`. */ readonly testMatch?: PlaywrightTestConfig['testMatch']; /** Time for one test. Default 3 minutes. */ readonly testTimeoutMs?: number; };",
       "jsdocSummary": ""
     },
     {
-      "subpath": "./server/integration-tester",
-      "name": "TesterUserOverrides",
+      "subpath": "./playwright",
+      "name": "E2EOptions",
       "kind": "type",
-      "signature": "export type TesterUserOverrides = Partial<Record<'user' | 'moderator' | 'admin', TestUser>>;",
+      "signature": "export type E2EOptions<M extends E2EServices, TServices, TUser, TFactories> = { readonly stack: Stack<M>; /** A loader, so the app's env is set before its modules read it. */ readonly app: () => Promise<BootableApp<TServices>>; readonly auth: (services: TServices) => TestAuth<TUser>; readonly serve: ServerOptions['serve']; readonly factories: (services: TServices) => TFactories; /** The env name of the cron secret. Default `CRON_SECRET`. */ readonly cronSecretEnv?: string; };",
       "jsdocSummary": ""
     },
     {
-      "subpath": "./server/integration-tester",
-      "name": "TesterUsers",
+      "subpath": "./playwright",
+      "name": "E2EServices",
       "kind": "type",
-      "signature": "export type TesterUsers = { user: TestUser; moderator: TestUser; admin: TestUser; };",
+      "signature": "export type E2EServices = Readonly<Record<string, ServiceSpec<Json, Json>>> & { readonly mailpit: ServiceSpec<null, MailpitWorker>; };",
+      "jsdocSummary": "A stack the e2e layer can use: it must have a `mailpit` service."
+    },
+    {
+      "subpath": "./playwright",
+      "name": "e2eTest",
+      "kind": "function",
+      "signature": "export declare function e2eTest<M extends E2EServices, TServices, TUser, TFactories>(options: E2EOptions<M, TServices, TUser, TFactories>): { test: TestType<import(\"@playwright/test\").PlaywrightTestArgs & import(\"@playwright/test\").PlaywrightTestOptions & TestFixtures<TUser, TFactories>, import(\"@playwright/test\").PlaywrightWorkerArgs & import(\"@playwright/test\").PlaywrightWorkerOptions & WorkerFixtures<M, TServices>>; expect: import(\"@playwright/test\").Expect<{ toScore<TOutput, TInput = unknown, TExpected = unknown>(received: TOutput, scorer: import(\"../ai/score.js\").Scorer<TOutput, TInput, TExpected>, options?: import(\"../ai/matcher.js\").ScoreOptions<TInput, TExpected>): Promise<{ pass: boolean; message: () => string; name: string; }>; }>; story: { (id: string, title: string, body: StoryBody<import(\"@playwright/test\").PlaywrightTestArgs & import(\"@playwright/test\").PlaywrightTestOptions & TestFixtures<TUser, TFactories>, import(\"@playwright/test\").PlaywrightWorkerArgs & import(\"@playwright/test\").PlaywrightWorkerOptions & WorkerFixtures<M, TServices>>): void; (id: string, title: string, details: { readonly tag: string; }, body: StoryBody<import(\"@playwright/test\").PlaywrightTestArgs & import(\"@playwright/test\").PlaywrightTestOptions & TestFixtures<TUser, TFactories>, import(\"@playwright/test\").PlaywrightWorkerArgs & import(\"@playwright/test\").PlaywrightWorkerOptions & WorkerFixtures<M, TServices>>): void; }; };",
       "jsdocSummary": ""
     },
     {
-      "subpath": "./server/integration-tester",
-      "name": "TestUser",
-      "kind": "type",
-      "signature": "export type TestUser = { id: UserId; email: string; name: string; permissions?: string[]; roles?: string[]; };",
-      "jsdocSummary": ""
+      "subpath": "./playwright",
+      "name": "ensureBuilt",
+      "kind": "function",
+      "signature": "export declare function ensureBuilt(build: ServerOptions['build']): Promise<boolean>;",
+      "jsdocSummary": "Builds the app unless the sources are unchanged since the last build. Returns whether it built."
     },
     {
-      "subpath": "./server/integration-tester",
-      "name": "TestUserRole",
-      "kind": "type",
-      "signature": "export type TestUserRole = 'public' | 'user' | 'moderator' | 'admin';",
-      "jsdocSummary": ""
+      "subpath": "./playwright",
+      "name": "holdRequests",
+      "kind": "function",
+      "signature": "export declare function holdRequests(page: Page, paths: readonly string[]): Promise<RequestHold>;",
+      "jsdocSummary": "Delay the real response of every request whose URL contains one of `paths`, to look at a loading state. The request is only sent to the real server after `release`, so nothing is faked, answered or aborted. Other requests are untouched. Call it before `page.goto`. A hold that is never released ends with the page."
     },
     {
-      "subpath": "./server/tester-builder",
-      "name": "ContextTesterBuilder",
+      "subpath": "./playwright",
+      "name": "Isolation",
       "kind": "type",
-      "signature": "export type ContextTesterBuilder<TContext extends Record<string, unknown>> = { /** * Capture the caller type for type inference * * @example * ```typescript * const t = initTester * .context<AppContext>() * .caller<Caller>() * .create({ ... }); * ``` */ caller<TCaller>(): TesterBuilder<TContext, TCaller>; };",
-      "jsdocSummary": "Builder with context type captured"
+      "signature": "export type Isolation = 'shared' | 'fresh';",
+      "jsdocSummary": "What a test shares with the ones before it on the same worker. `shared` (default): the worker's database, mail and keys as the last test left them. `fresh`: every table emptied, mail and keys flushed before the test starts. Use it for a test that runs work over everything in the database (a global cron), whose outcome would otherwise depend on the tests that ran before it. Set it with `test.use({ isolation: 'fresh' })`."
     },
     {
-      "subpath": "./server/tester-builder",
-      "name": "InitialTesterBuilder",
+      "subpath": "./playwright",
+      "name": "RequestHold",
       "kind": "type",
-      "signature": "export type InitialTesterBuilder = { /** * Capture the context type for type inference * * @example * ```typescript * const t = initTester * .context<AppContext>() * .caller<Caller>() * .create({ ... }); * ``` */ context<TContext extends Record<string, unknown>>(): ContextTesterBuilder<TContext>; };",
-      "jsdocSummary": "Initial tester builder (no types captured yet)"
+      "signature": "export type RequestHold = { /** Resolves once a held request has arrived, so a test knows the page is really waiting. */ readonly arrived: Promise<void>; /** Lets every held request (and every later one) through to the real server. */ release(): Promise<void>; };",
+      "jsdocSummary": "A hold on requests to the app: they wait at the browser until `release`, then go to the real server."
     },
     {
-      "subpath": "./server/tester-builder",
-      "name": "initTester",
+      "subpath": "./playwright",
+      "name": "SERVER_ROOT_ENV_KEY",
       "kind": "variable",
-      "signature": "export declare const initTester: InitialTesterBuilder;",
-      "jsdocSummary": "Initialize the tester builder"
+      "signature": "export declare const SERVER_ROOT_ENV_KEY = \"ARKI_SERVER_ROOT\";",
+      "jsdocSummary": "The env name of the folder this run's servers start in. Read it where `serve.cwd` is written."
     },
     {
-      "subpath": "./server/tester-builder",
-      "name": "TesterBuilder",
+      "subpath": "./playwright",
+      "name": "ServerOptions",
       "kind": "type",
-      "signature": "export type TesterBuilder<TContext extends Record<string, unknown>, TCaller> = { /** * Create the tester builder with configuration. The schema, database and * repository types are inferred from `config`. */ create<TSchema extends Record<string, unknown>, TDatabase extends THandle, TRepositories extends Record<string, unknown>, THandle extends TesterDatabase<THandle>>(config: TesterConfig<TSchema, TDatabase, TRepositories, TContext, TCaller, THandle>): { /** * Tester factory with methods to create configured testers */ tester: { /** * Create a tester with typed factories * * @example * ```typescript * const createTester = t.tester.withFactories(factories); * const tester = createTester(); * tester.db; // the app's database type * tester.repo; // the app's repositories * tester.factory.gameRegistry.game(); // Fully typed! * ``` */ withFactories<TFactories extends object>(factories: TFactories): (options?: TesterOptions) => IntegrationTester<TSchema, TDatabase, TRepositories, TCaller, TContext, THandle> & { /** The factories passed to `withFactories`, exactly as typed there. */ readonly factory: TFactories; }; /** * Create a basic tester without factories (it has no `factory` property) */ create(options?: TesterOptions): IntegrationTester<TSchema, TDatabase, TRepositories, TCaller, TContext, THandle>; }; }; };",
-      "jsdocSummary": "Tester builder with context and caller types captured"
+      "signature": "export type ServerOptions = { readonly build: { /** For example `['bun', 'run', 'build']`. */ readonly command: readonly [string, ...string[]]; readonly cwd: string; /** Files and folders whose change means the build is stale. */ readonly inputs: readonly string[]; /** A file the build writes; the build is skipped when it is newer than the inputs' hash. */ readonly output: string; }; readonly serve: { /** For example `['bun', '.output/server/index.mjs']`. */ readonly command: readonly [string, ...string[]]; readonly cwd: string; /** A path that answers 200 once the server is ready. */ readonly readyPath: string; }; };",
+      "jsdocSummary": ""
     },
     {
-      "subpath": "./server/tester-builder",
-      "name": "TesterConfig",
+      "subpath": "./playwright",
+      "name": "stackSetup",
+      "kind": "function",
+      "signature": "export declare function stackSetup<M extends ServiceMap>(stack: Stack<M>, options: Pick<ServerOptions, 'build'>): () => Promise<() => Promise<void>>;",
+      "jsdocSummary": ""
+    },
+    {
+      "subpath": "./playwright",
+      "name": "StoryBody",
       "kind": "type",
-      "signature": "export type TesterConfig<TSchema extends Record<string, unknown>, TDatabase extends THandle, TRepositories extends Record<string, unknown>, TContext extends Record<string, unknown>, TCaller, THandle extends TesterDatabase<THandle>> = IntegrationTesterConfig<TSchema, TDatabase, TRepositories, TCaller, TContext, THandle>;",
-      "jsdocSummary": "Configuration for tester initialization. The schema, database and repository types are inferred from the functions you pass in (the database type from `createRepositories`' parameter, the root database type from what `createDatabase` returns, and the repository type from `createRepositories`' return value)."
+      "signature": "export type StoryBody<TArgs extends object, WArgs extends object> = (args: TArgs & WArgs, testInfo: TestInfo) => Promise<void> | void;",
+      "jsdocSummary": "What a story body receives from a test built by `e2eTest`, plus whatever the app added with `extend`."
+    },
+    {
+      "subpath": "./playwright",
+      "name": "storyFor",
+      "kind": "function",
+      "signature": "export declare function storyFor<TArgs extends object, WArgs extends object>(test: TestType<TArgs, WArgs>): { (id: string, title: string, body: StoryBody<TArgs, WArgs>): void; (id: string, title: string, details: { readonly tag: string; }, body: StoryBody<TArgs, WArgs>): void; };",
+      "jsdocSummary": "`story(id, title, body)` for any Playwright test, including one an app extended with its own fixtures. The title starts with the id, so the report and the PRD agree."
+    },
+    {
+      "subpath": "./playwright",
+      "name": "TestAuth",
+      "kind": "type",
+      "signature": "export type TestAuth<TUser> = { readonly testing: { signIn(user: { readonly email: string; }): Promise<{ readonly headers: Headers; readonly user: TUser; }>; }; };",
+      "jsdocSummary": "The sign-in seam of `@arki/auth`: a real session, as headers that carry its cookie."
+    },
+    {
+      "subpath": "./playwright/ai",
+      "name": "expect",
+      "kind": "variable",
+      "signature": "export declare const expect: import(\"@playwright/test\").Expect<{ toScore<TOutput, TInput = unknown, TExpected = unknown>(received: TOutput, scorer: Scorer<TOutput, TInput, TExpected>, options?: ScoreOptions<TInput, TExpected>): Promise<{ pass: boolean; message: () => string; name: string; }>; }>;",
+      "jsdocSummary": ""
     },
     {
       "subpath": "./services/http-fixtures",
@@ -1305,48 +1340,6 @@
       "jsdocSummary": ""
     },
     {
-      "subpath": "./services/mailpit",
-      "name": "mailbox",
-      "kind": "function",
-      "signature": "export declare function mailbox(httpUrl: string): Mailbox;",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./services/mailpit",
-      "name": "Mailbox",
-      "kind": "type",
-      "signature": "export type Mailbox = { /** Mails to `to` (an exact address) or all mails when omitted. Oldest first. */ all(to?: string): Promise<readonly MailSummary[]>; /** * Waits until a mail to `to` whose subject matches arrives, and returns it in full. * Polls Mailpit; on timeout the error lists what Mailpit does hold (MAIL_NOT_RECEIVED). */ waitFor(match: { readonly to: string; readonly subject?: string | RegExp; readonly timeoutMs?: number; }): Promise<ReceivedMail>; /** Deletes the mails to `to`, or every mail when omitted. */ clear(to?: string): Promise<void>; };",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./services/mailpit",
-      "name": "mailpit",
-      "kind": "variable",
-      "signature": "export declare const mailpit: (options?: { readonly image?: string; }) => import(\"../stack/index.js\").ServiceSpec<null, MailpitWorker>;",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./services/mailpit",
-      "name": "MailpitWorker",
-      "kind": "type",
-      "signature": "export type MailpitWorker = { readonly httpUrl: string; };",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./services/mailpit",
-      "name": "MailSummary",
-      "kind": "type",
-      "signature": "export type MailSummary = { readonly id: string; readonly subject: string; readonly to: readonly string[]; };",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./services/mailpit",
-      "name": "ReceivedMail",
-      "kind": "type",
-      "signature": "export type ReceivedMail = MailSummary & { readonly text: string; readonly html: string; /** Every `http(s)` link in the HTML part, in order. */ links(): readonly string[]; };",
-      "jsdocSummary": "One mail, read in full."
-    },
-    {
       "subpath": "./services/ollama",
       "name": "ollama",
       "kind": "variable",
@@ -1365,62 +1358,6 @@
       "name": "OllamaValue",
       "kind": "type",
       "signature": "export type OllamaValue = { readonly url: string; /** Every model the run asked for, `judge` and `embedding` included. */ readonly models: readonly string[]; /** The judge model, or `null` when the run asked for none. */ readonly judge: string | null; /** The embedding model, or `null` when the run asked for none. */ readonly embedding: string | null; /** Model name to digest, for every model the run asked for. */ readonly digests: Readonly<Record<string, string>>; };",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./services/postgres",
-      "name": "postgres",
-      "kind": "variable",
-      "signature": "export declare const postgres: (options: PostgresOptions) => import(\"../stack/index.js\").ServiceSpec<PostgresRun, PostgresWorker>;",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./services/postgres",
-      "name": "PostgresOptions",
-      "kind": "type",
-      "signature": "export type PostgresOptions = { /** Default `postgres:17-alpine`. */ readonly image?: string; /** Builds the app's schema in the template. `url` points at the template; it runs once per run. */ readonly buildSchema: (url: string) => Promise<void>; };",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./services/postgres",
-      "name": "PostgresRun",
-      "kind": "type",
-      "signature": "export type PostgresRun = { readonly adminUrl: string; readonly templateDb: string; };",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./services/postgres",
-      "name": "PostgresWorker",
-      "kind": "type",
-      "signature": "export type PostgresWorker = { readonly url: string; readonly database: string; };",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./services/postgres",
-      "name": "truncateAll",
-      "kind": "function",
-      "signature": "export declare function truncateAll(url: string): Promise<void>;",
-      "jsdocSummary": "Empties every table in `url`, restarting identities. Use between tests that share a worker."
-    },
-    {
-      "subpath": "./services/redis",
-      "name": "flushRedis",
-      "kind": "function",
-      "signature": "export declare function flushRedis(url: string): Promise<void>;",
-      "jsdocSummary": "Empties every key of the Redis at `url` (`FLUSHALL`), so one test's keys never reach the next."
-    },
-    {
-      "subpath": "./services/redis",
-      "name": "redis",
-      "kind": "variable",
-      "signature": "export declare const redis: (options?: { readonly image?: string; }) => import(\"../stack/index.js\").ServiceSpec<null, RedisWorker>;",
-      "jsdocSummary": ""
-    },
-    {
-      "subpath": "./services/redis",
-      "name": "RedisWorker",
-      "kind": "type",
-      "signature": "export type RedisWorker = { readonly url: string; };",
       "jsdocSummary": ""
     },
     {
@@ -1665,7 +1602,7 @@
       "subpath": "./timestamps",
       "name": "Timestamp",
       "kind": "type",
-      "signature": "export type Timestamp = Date | Timeline;",
+      "signature": "export type Timestamp = Date | Temporal.Instant | Temporal.ZonedDateTime;",
       "jsdocSummary": "A moment in time: a `Date`, or a Temporal `Instant` or `ZonedDateTime`."
     },
     {

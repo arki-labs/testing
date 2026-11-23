@@ -102,7 +102,8 @@ export declare function createFactory<T>(generator: () => T, defaults?: Partial<
  * Create multiple instances from a factory
  *
  * @param factory - Factory function to use
- * @param count - Number of instances to create
+ * @param count - Number of instances to create (a whole number of at least 0, or the invariant failure
+ *   `ARKI_FAILURE_E008` is thrown: `Array.from` would throw a raw RangeError for -1 and make 0 of NaN)
  * @param overrides - Optional overrides for all instances or function to generate per-instance overrides
  * @returns Array of instances
  *

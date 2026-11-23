@@ -6,9 +6,9 @@
  * through their exact epoch in nanoseconds, so they never lose precision and
  * never depend on a time zone.
  */
-import type { Timeline } from '@arki/date/types';
+import type { Temporal } from '@arki/date/types';
 /** A moment in time: a `Date`, or a Temporal `Instant` or `ZonedDateTime`. */
-export type Timestamp = Date | Timeline;
+export type Timestamp = Date | Temporal.Instant | Temporal.ZonedDateTime;
 /** An object with the two timestamps every table row carries. */
 export type Timestamps = {
     createdAt: Timestamp;
@@ -18,9 +18,18 @@ export type Timestamps = {
 export declare function isTimestamp(value: unknown): value is Timestamp;
 /** Name the kind of a value that failed `isTimestamp`, for an error message. */
 export declare function describeKind(value: unknown): string;
-/** The exact epoch of a timestamp in nanoseconds, whatever its kind. */
+/**
+ * The exact epoch of a timestamp in nanoseconds, whatever its kind.
+ *
+ * @throws FailureError `ARKI_FAILURE_E008` (invariant) for an `Invalid Date`: it holds no moment. Check
+ *   untrusted values with {@link isTimestamp} first.
+ */
 export declare function epochNanoseconds(value: Timestamp): bigint;
-/** The epoch of a timestamp in whole milliseconds, rounded toward the past. */
+/**
+ * The epoch of a timestamp in whole milliseconds, rounded toward the past.
+ *
+ * @throws FailureError `ARKI_FAILURE_E008` (invariant) for an `Invalid Date`, as {@link epochNanoseconds}.
+ */
 export declare function epochMilliseconds(value: Timestamp): number;
 /**
  * Assert that an object has valid createdAt and updatedAt timestamps.
@@ -33,6 +42,7 @@ export declare function assertTimestamps(obj: unknown): asserts obj is Timestamp
  * Assert that updatedAt is greater than or equal to createdAt.
  *
  * @throws Error if updatedAt is before createdAt
+ * @throws FailureError `ARKI_FAILURE_E008` (invariant) if either is an `Invalid Date`
  */
 export declare function assertUpdatedAfterCreated(obj: Timestamps): void;
 //# sourceMappingURL=timestamps.d.ts.map

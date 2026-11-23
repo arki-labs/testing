@@ -1,5 +1,7 @@
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { GenericContainer } from 'testcontainers';
+import { z } from 'zod';
+import { is } from '@arki/schema';
 import { debugContainers } from './debug.js';
 export const POSTGRES_GLOBAL_KEY = '__POSTGRES_CONNECTION_STRING__';
 export const REDIS_GLOBAL_KEY = '__REDIS_CONNECTION_STRING__';
@@ -27,7 +29,7 @@ export async function startRedisContainer(image = 'redis:7-alpine') {
 }
 function readGlobalString(key) {
     const value = Reflect.get(globalThis, key);
-    return typeof value === 'string' ? value : undefined;
+    return is(value, z.string()) ? value : undefined;
 }
 export function getGlobalPostgresConnectionString() {
     const connectionString = readGlobalString(POSTGRES_GLOBAL_KEY);

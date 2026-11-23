@@ -1,7 +1,7 @@
 {
   "name": "@arki/testing",
-  "version": "0.3.0",
-  "description": "Test tooling for TypeScript backends: testcontainers Postgres and Redis, an integration tester, typed factories, assertions, MSW mocking and AI judges.",
+  "version": "0.4.0",
+  "description": "Test tooling for TypeScript backends: testcontainers Postgres and Redis, typed factories, assertions, MSW mocking and AI judges.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -33,7 +33,7 @@
       "import": "./dist/ai/index.js",
       "default": "./dist/ai/index.js"
     },
-    "./ai/playwright": {
+    "./playwright/ai": {
       "types": "./dist/ai/playwright.d.ts",
       "import": "./dist/ai/playwright.js",
       "default": "./dist/ai/playwright.js"
@@ -63,7 +63,7 @@
       "import": "./dist/factories.js",
       "default": "./dist/factories.js"
     },
-    "./e2e": {
+    "./playwright": {
       "types": "./dist/e2e/index.d.ts",
       "import": "./dist/e2e/index.js",
       "default": "./dist/e2e/index.js"
@@ -73,7 +73,7 @@
       "import": "./dist/services/http-fixtures.js",
       "default": "./dist/services/http-fixtures.js"
     },
-    "./services/mailpit": {
+    "./containers/mailpit": {
       "types": "./dist/services/mailpit.d.ts",
       "import": "./dist/services/mailpit.js",
       "default": "./dist/services/mailpit.js"
@@ -83,12 +83,12 @@
       "import": "./dist/services/ollama.js",
       "default": "./dist/services/ollama.js"
     },
-    "./services/postgres": {
+    "./containers/postgres": {
       "types": "./dist/services/postgres.d.ts",
       "import": "./dist/services/postgres.js",
       "default": "./dist/services/postgres.js"
     },
-    "./services/redis": {
+    "./containers/redis": {
       "types": "./dist/services/redis.d.ts",
       "import": "./dist/services/redis.js",
       "default": "./dist/services/redis.js"
@@ -103,11 +103,6 @@
       "import": "./dist/stack/contract.js",
       "default": "./dist/stack/contract.js"
     },
-    "./server/integration-tester": {
-      "types": "./dist/integration-tester.d.ts",
-      "import": "./dist/integration-tester.js",
-      "default": "./dist/integration-tester.js"
-    },
     "./msw": {
       "types": "./dist/msw.d.ts",
       "import": "./dist/msw.js",
@@ -117,11 +112,6 @@
       "types": "./dist/performance.d.ts",
       "import": "./dist/performance.js",
       "default": "./dist/performance.js"
-    },
-    "./server/tester-builder": {
-      "types": "./dist/tester-builder.d.ts",
-      "import": "./dist/tester-builder.js",
-      "default": "./dist/tester-builder.js"
     },
     "./timestamps": {
       "types": "./dist/timestamps.d.ts",
@@ -133,7 +123,12 @@
       "import": "./dist/vitest-setup.js",
       "default": "./dist/vitest-setup.js"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./otel": {
+      "types": "./dist/otel.d.ts",
+      "import": "./dist/otel.js",
+      "default": "./dist/otel.js"
+    }
   },
   "types": "./dist/index.d.ts",
   "files": [
@@ -153,18 +148,19 @@
     "package.json"
   ],
   "dependencies": {
-    "@arki/date": "0.5.0",
-    "@arki/db": "0.5.1",
-    "@arki/failure": "0.3.0",
-    "@arki/kv": "0.5.0",
-    "@arki/log": "0.4.0",
-    "@arki/schema": "0.3.0",
+    "@arki/date": "0.5.2",
+    "@arki/failure": "0.4.0",
+    "@arki/log": "0.4.1",
+    "@arki/schema": "0.3.1",
     "@faker-js/faker": "^10.6.0",
+    "@opentelemetry/sdk-metrics": "^2.12.0",
+    "@opentelemetry/sdk-trace-base": "^2.12.0",
     "drizzle-orm": "1.0.0-rc.4",
-    "pg": "8.23.1"
+    "pg": "8.23.1",
+    "zod": "4.6.5"
   },
   "peerDependencies": {
-    "@arki/auth": "^0.4.0",
+    "@opentelemetry/api": "^1.9.1",
     "@playwright/test": "^1.64.0",
     "@testcontainers/postgresql": "^12.2.0",
     "@testcontainers/redis": "^12.2.0",
@@ -173,7 +169,7 @@
     "vitest": "^5.0.3"
   },
   "peerDependenciesMeta": {
-    "@arki/auth": {
+    "@opentelemetry/api": {
       "optional": true
     },
     "@playwright/test": {
@@ -197,5 +193,12 @@
   },
   "engines": {
     "node": ">=22.10"
+  },
+  "arki": {
+    "runtimes": [
+      "node",
+      "bun",
+      "deno"
+    ]
   }
 }

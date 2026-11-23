@@ -9,6 +9,8 @@
 import { writeFile } from 'node:fs/promises';
 import { test as base } from '@playwright/test';
 import { orThrow } from '@arki/failure';
+import { is } from '@arki/schema';
+import { z } from 'zod';
 import { getLogger } from '@arki/log';
 import { mailbox } from '../services/mailpit.js';
 import { truncateAll } from '../services/postgres.js';
@@ -93,10 +95,9 @@ export function e2eTest(options) {
                 async run(name) {
                     const response = await request.post(`/api/cron/${name}`, { headers: { authorization: `Bearer ${secret}` }, timeout: 0 });
                     const text = await response.text();
-                    const body = text === '' ? null : JSON.parse(text);
                     if (!response.ok())
                         throw new Error(`CRON_FAILED: ${name} answered ${response.status()}: ${text}`);
-                    return { status: response.status(), body };
+                    return { status: response.status(), body: cronBody(name, text) };
                 },
             });
         },
@@ -133,13 +134,24 @@ export function e2eTest(options) {
     const story = storyFor(test);
     return { test, expect, story };
 }
+/** A cron route's answer as JSON (`null` when empty). Text that is not JSON is the app's bug, named as such. */
+function cronBody(name, text) {
+    if (text === '')
+        return null;
+    try {
+        const body = JSON.parse(text);
+        return body;
+    }
+    catch {
+        throw new Error(`CRON_BAD_BODY: ${name} answered text that is not JSON: ${text.slice(0, 200)}`);
+    }
+}
+/** What a service that serves HTTP publishes for a worker: at least its `url`. */
+const publishedUrlSchema = z.object({ url: z.string() });
 /** The `url` a service published for this worker, when the stack has that service. */
 function urlOf(values, service) {
     const published = Reflect.get(values, service);
-    if (typeof published !== 'object' || published === null)
-        return undefined;
-    const url = Reflect.get(published, 'url');
-    return typeof url === 'string' ? url : undefined;
+    return is(published, publishedUrlSchema) ? published.url : undefined;
 }
 /** `name=value` from a `cookie` header, installed on the browser context for the server's host. */
 async function addSessionCookie(context, headers, serverUrl) {

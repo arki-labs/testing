@@ -4,12 +4,22 @@
  * Provides helpers for measuring and asserting performance characteristics
  * of database operations and API calls.
  */
+import { invariant } from '@arki/failure';
+/** `maxMs` is a duration threshold: `NaN` would make every run pass, a negative one every run fail. */
+function checkMaxMs(maxMs) {
+    invariant(maxMs === undefined || (Number.isFinite(maxMs) && maxMs >= 0), `maxMs must be a finite number of milliseconds of at least 0, got ${maxMs}.`);
+}
+/** `iterations` counts runs: 0 or `NaN` would report the statistics of no run as numbers. */
+function checkIterations(iterations) {
+    invariant(Number.isSafeInteger(iterations) && iterations >= 1, `iterations must be a whole number of at least 1, got ${iterations}.`);
+}
 /**
  * Measure the performance of an operation
  *
  * @param label - Label for the operation
  * @param operation - Async operation to measure
- * @param options - Options including maxMs threshold
+ * @param options - Options including maxMs threshold (finite and at least 0, or the invariant failure
+ *   `ARKI_FAILURE_E008` is thrown before the operation runs)
  * @returns Performance result
  *
  * @throws Error if maxMs is specified and operation exceeds it
@@ -30,6 +40,7 @@
  * ```
  */
 export async function measurePerformance(label, operation, options = {}) {
+    checkMaxMs(options.maxMs);
     const startTime = Date.now();
     const result = await operation();
     const endTime = Date.now();
@@ -59,7 +70,8 @@ export async function measurePerformance(label, operation, options = {}) {
  *
  * @param label - Label for the benchmark
  * @param query - Query function to benchmark
- * @param iterations - Number of iterations (default: 10)
+ * @param iterations - Number of iterations (default: 10; a whole number of at least 1, or the invariant
+ *   failure `ARKI_FAILURE_E008` is thrown before any run)
  * @returns Benchmark statistics
  *
  * @example
@@ -74,6 +86,7 @@ export async function measurePerformance(label, operation, options = {}) {
  * ```
  */
 export async function benchmarkQuery(label, query, iterations = 10) {
+    checkIterations(iterations);
     const durations = [];
     for (let i = 0; i < iterations; i++) {
         const start = Date.now();
@@ -115,7 +128,8 @@ export async function benchmarkQuery(label, query, iterations = 10) {
  * Compare the performance of multiple operations
  *
  * @param operations - Object mapping labels to operation functions
- * @param iterations - Number of iterations per operation (default: 10)
+ * @param iterations - Number of iterations per operation (default: 10; a whole number of at least 1, or
+ *   the invariant failure `ARKI_FAILURE_E008` is thrown before any run; so is an empty `operations`)
  * @returns Comparison results sorted by average duration
  *
  * @example
@@ -131,6 +145,8 @@ export async function benchmarkQuery(label, query, iterations = 10) {
  */
 export async function comparePerformance(operations, iterations = 10) {
     const results = [];
+    checkIterations(iterations);
+    invariant(Object.keys(operations).length > 0, 'comparePerformance: operations is empty, so there is nothing to compare.');
     for (const [label, operation] of Object.entries(operations)) {
         const durations = [];
         for (let i = 0; i < iterations; i++) {
@@ -164,7 +180,8 @@ export async function comparePerformance(operations, iterations = 10) {
  *
  * @param label - Label for the operation
  * @param operation - Async operation to measure
- * @param maxMs - Maximum allowed duration in milliseconds
+ * @param maxMs - Maximum allowed duration in milliseconds (finite and at least 0, or the invariant failure
+ *   `ARKI_FAILURE_E008` is thrown before the operation runs)
  * @returns The result of the operation
  *
  * @throws Error if operation exceeds maxMs
@@ -208,6 +225,7 @@ export function createPerformanceTracker() {
     const measurements = [];
     return {
         async measure(label, operation, options = {}) {
+            checkMaxMs(options.maxMs);
             const startTime = Date.now();
             const result = await operation();
             const endTime = Date.now();

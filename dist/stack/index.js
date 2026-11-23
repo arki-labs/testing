@@ -7,7 +7,8 @@
  * runner writes them into one env variable (`ARKI_STACK`) and every worker reads them back.
  */
 import { defineFailure, isFailure } from '@arki/failure';
-import { is, parse, recordSchema } from '@arki/schema';
+import { z } from 'zod';
+import { parse } from '@arki/schema';
 /** Writes a service. Method syntax in the type keeps every spec assignable to the stack's map. */
 export function service(spec) {
     return spec;
@@ -38,67 +39,20 @@ export const StackManifestInvalid = /* @__PURE__ */ defineFailure('testing.stack
 });
 /** Every failure `readManifest` returns. */
 export const READ_MANIFEST_FAILURES = [StackNotStarted, StackManifestInvalid];
-/** The value as `Json`, or `undefined` when something inside is not JSON (a function, a symbol, `undefined`). */
-function jsonOf(value) {
-    if (value === null || typeof value === 'string' || typeof value === 'boolean')
-        return value;
-    if (typeof value === 'number')
-        return Number.isFinite(value) ? value : undefined;
-    if (Array.isArray(value)) {
-        const items = value;
-        const checked = [];
-        for (const item of items) {
-            const entry = jsonOf(item);
-            if (entry === undefined)
-                return undefined;
-            checked.push(entry);
-        }
-        return checked;
-    }
-    if (!is(value, recordSchema))
-        return undefined;
-    const checked = {};
-    for (const [key, item] of Object.entries(value)) {
-        const entry = jsonOf(item);
-        if (entry === undefined)
-            return undefined;
-        checked[key] = entry;
-    }
-    return checked;
-}
 /** JSON text of `{ runId: string, run: object }`. The text is parsed inside the schema, so a bad text is an issue, not a throw. */
-const manifestTextSchema = {
-    '~standard': {
-        version: 1,
-        vendor: 'arki-testing',
-        validate(text) {
-            const issue = { issues: [{ message: 'expected JSON text of { runId: string, run: object }' }] };
-            if (typeof text !== 'string')
-                return issue;
-            let json;
-            try {
-                json = JSON.parse(text);
-            }
-            catch {
-                return issue;
-            }
-            if (!is(json, recordSchema))
-                return issue;
-            const runId = json['runId'];
-            const run = json['run'];
-            if (typeof runId !== 'string' || !is(run, recordSchema))
-                return issue;
-            const values = {};
-            for (const [key, value] of Object.entries(run)) {
-                const checked = jsonOf(value);
-                if (checked === undefined)
-                    return issue;
-                values[key] = checked;
-            }
-            return { value: { runId, run: values } };
-        },
-    },
-};
+const manifestTextSchema = z
+    .string()
+    .transform((text, context) => {
+    try {
+        const json = JSON.parse(text);
+        return json;
+    }
+    catch {
+        context.addIssue({ code: 'custom', message: 'expected JSON text of { runId: string, run: object }' });
+        return z.NEVER;
+    }
+})
+    .pipe(z.object({ runId: z.string(), run: z.record(z.string(), z.json()) }));
 /**
  * Reads the manifest the runner put in `process.env.ARKI_STACK`. The one place it is validated.
  * Returns {@link StackNotStarted} for an empty env and {@link StackManifestInvalid} for text that is not a manifest.

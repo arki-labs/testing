@@ -24,7 +24,7 @@
     "what": "`ARKI_STACK` holds text that is not the manifest the runner writes: not JSON, or not `{ runId: string, run: object }`.",
     "fix": "Do not set `ARKI_STACK` by hand; let `stackSetup` write it.",
     "verify": "cd packages/testing && bun run vitest run src/stack/index.test.ts",
-    "source": "src/stack/index.ts:111"
+    "source": "src/stack/index.ts:112"
   },
   {
     "code": "testing.stack_not_started",
@@ -33,6 +33,6 @@
     "what": "`ARKI_STACK` is empty: the stack starts in Playwright's `globalSetup`, so the test was not run through `playwright test`, or the stack was not started first.",
     "fix": "Run the tests with `playwright test`, or start the stack before reading the manifest.",
     "verify": "cd packages/testing && bun run vitest run src/stack/index.test.ts",
-    "source": "src/stack/index.ts:99"
+    "source": "src/stack/index.ts:100"
   }
 ]

@@ -1,8 +1,8 @@
-Read-only mirror of `@arki/testing` v0.3.0. Source and issues: arki-labs/arki. Docs: https://arki.dev/packages/testing. Published 2026-11-02 with provenance https://www.npmjs.com/package/@arki/testing/v/0.3.0#provenance.
+Read-only mirror of `@arki/testing` v0.4.0. Source and issues: arki-labs/arki. Docs: https://arki.dev/packages/testing. Published 2026-11-23 with provenance https://www.npmjs.com/package/@arki/testing/v/0.4.0#provenance.
 
 # @arki/testing
 
-Test tooling for TypeScript backends: shared Postgres and Redis containers, an integration tester with role callers and rollback, typed factories, assertions, MSW HTTP mocking, a service stack for end-to-end runs, and scorers for AI output.
+Test tooling for TypeScript backends: shared Postgres and Redis containers, typed factories, assertions, MSW HTTP mocking, a service stack for end-to-end runs, and scorers for AI output.
 
 ## Install
 
@@ -10,7 +10,7 @@ Test tooling for TypeScript backends: shared Postgres and Redis containers, an i
 bun add -D @arki/testing vitest
 ```
 
-Add the peers you use. All are optional: `testcontainers`, `@testcontainers/postgresql` and `@testcontainers/redis` for containers, `msw` for HTTP mocking, `@playwright/test` for `e2e` and `ai/playwright`, `@arki/auth` for the integration tester.
+Add the peers you use. All are optional: `testcontainers`, `@testcontainers/postgresql` and `@testcontainers/redis` for containers, `msw` for HTTP mocking, `@playwright/test` for `e2e` and `ai/playwright`.
 
 ## Quick start
 
@@ -40,7 +40,7 @@ await assertErrorThrown(() => Promise.reject(new Error('user not found')), /not 
 
 `userFactory({ ... })` returns the object. `userFactory()` returns a builder. The imports are `createFactory`, `createMany`, `faker`, `assertPaginationValid`, `assertContainsId` and `assertErrorThrown` from `@arki/testing`. The full file is [examples/factories-and-assertions.ts](examples/factories-and-assertions.ts).
 
-For a backend test against a real database, see [the integration tester](docs/integration-tester.md).
+For a backend test against a real database with role callers and rollback, use `IntegrationTester` and `initTester` from `@arki/auth/testing/integration-tester`.
 
 ## When not to use this
 
@@ -51,28 +51,40 @@ For a backend test against a real database, see [the integration tester](docs/in
 
 ## Runtime support
 
-Runs under Vitest 5 and Bun on Node 22.10 or newer. The package ships TypeScript source, so plain Node cannot load it from `node_modules`: use Vitest, Bun or a bundler. Not for browsers. The containers need a reachable Docker daemon.
+Runs under Vitest 5, Bun and Deno on Node 22.10 or newer. The package ships TypeScript source, so plain Node cannot load it from `node_modules`: use Vitest, Bun or a bundler. Not for browsers. The containers need a reachable Docker daemon.
 
 Debug logs use the `testing:*` categories. Show them with `DEBUG_TESTS=true`.
 
+<!-- runtimes:start -->
+
+| Runtime | Result | Version tested | Date (UTC) |
+| ------- | ------ | -------------- | ---------- |
+| node    | pass   | v22.13.1       | 2026-11-05 |
+| bun     | pass   | 1.4.2          | 2026-11-05 |
+| deno    | pass   | 2.9.8          | 2026-11-05 |
+| browser | n/a    | -              | 2026-11-05 |
+| hermes  | n/a    | -              | 2026-11-05 |
+
+<!-- runtimes:end -->
+
 ## Public imports
 
-The root entry loads no Docker client, no MSW and no `@arki/auth`. The rest are explicit entries.
+The root entry loads no Docker client and no MSW. The rest are explicit entries. `IntegrationTester` and `initTester` moved to `@arki/auth/testing/integration-tester`.
 
-| Import                                                                            | Gives you                                                                    | Needs                                      |
-| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------ |
-| `@arki/testing`                                                                   | factories, assertions, timestamps, debug, performance                        | nothing                                    |
-| `@arki/testing/assertions`, `/factories`, `/timestamps`, `/debug`, `/performance` | one part of the root                                                         | nothing                                    |
-| `@arki/testing/containers`                                                        | `setupGlobalTestContainers`, `startPostgresContainer`, `startRedisContainer` | Docker, testcontainers                     |
-| `@arki/testing/server/tester-builder`                                             | `initTester`                                                                 | `@arki/auth`                               |
-| `@arki/testing/server/integration-tester`                                         | `IntegrationTester` and its types                                            | `@arki/auth`, Docker                       |
-| `@arki/testing/msw`                                                               | `setupMswServer`, `http`, `HttpResponse`                                     | `msw`, Vitest                              |
-| `@arki/testing/vitest-setup`                                                      | the Vitest test API, re-exported                                             | Vitest                                     |
-| `@arki/testing/stack`, `/stack/contract`                                          | declare real services once per app                                           | Vitest                                     |
-| `@arki/testing/services/*`                                                        | `postgres`, `redis`, `mailpit`, `ollama`, `http-fixtures`                    | Docker (not `ollama`, not `http-fixtures`) |
-| `@arki/testing/e2e`                                                               | Playwright config, setup and story helpers for a built app                   | `@playwright/test`, Docker                 |
-| `@arki/testing/ai`                                                                | scorers, `createJudge`, `defineScorer`                                       | an Ollama daemon for judge scorers         |
-| `@arki/testing/ai/vitest`, `/ai/playwright`                                       | `expect(...).toScore(scorer)`                                                | Vitest or Playwright                       |
+| Import                                                                            | Gives you                                                                    | Needs                              |
+| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------- |
+| `@arki/testing`                                                                   | factories, assertions, timestamps, debug, performance                        | nothing                            |
+| `@arki/testing/assertions`, `/factories`, `/timestamps`, `/debug`, `/performance` | one part of the root                                                         | nothing                            |
+| `@arki/testing/containers`                                                        | `setupGlobalTestContainers`, `startPostgresContainer`, `startRedisContainer` | Docker, testcontainers             |
+| `@arki/testing/msw`                                                               | `setupMswServer`, `http`, `HttpResponse`                                     | `msw`, Vitest                      |
+| `@arki/testing/vitest-setup`                                                      | the Vitest test API, re-exported                                             | Vitest                             |
+| `@arki/testing/stack`, `/stack/contract`                                          | declare real services once per app                                           | Vitest                             |
+| `@arki/testing/containers/postgres`, `/containers/redis`, `/containers/mailpit`   | one real service per run or worker                                           | Docker, testcontainers             |
+| `@arki/testing/services/ollama`, `/services/http-fixtures`                        | the local Ollama daemon, a local HTTP server                                 | an Ollama daemon (`ollama` only)   |
+| `@arki/testing/playwright`                                                        | Playwright config, setup and story helpers for a built app                   | `@playwright/test`, Docker         |
+| `@arki/testing/ai`                                                                | scorers, `createJudge`, `defineScorer`                                       | an Ollama daemon for judge scorers |
+| `@arki/testing/ai/vitest`, `/playwright/ai`                                       | `expect(...).toScore(scorer)`                                                | Vitest or Playwright               |
+| `@arki/testing/otel`                                                              | `captureSpans`: finished spans with their parents, and collected metrics     | `@opentelemetry/api`               |
 
 The full list with every export name is in [llms.txt](llms.txt).
 
@@ -81,9 +93,9 @@ The full list with every export name is in [llms.txt](llms.txt).
 Every helper throws a plain `Error` (or `TypeError` for a wrong value type) when a check fails, so the test fails with the message. A failed assertion is the test result. Only the Ollama calls and the stack manifest return a failure value, listed below.
 
 - Assertions name the field, the expected value and the actual value in the message.
-- `IntegrationTester` methods throw `Tester not initialized. Call setup() first.` before `setup()`.
 - A scorer that cannot score throws `UnscorableError`. It is never a pass, and `.not` does not turn it into one.
 - `setupMswServer` fails a test that makes a request no handler matches.
+- `captureSpans().named(name)` throws when no finished span or more than one has that name. The message lists every finished span.
 
 These return `@arki/failure` failures instead of throwing:
 
@@ -96,6 +108,10 @@ These return `@arki/failure` failures instead of throwing:
 
 `OLLAMA_FAILURES` lists every failure a judge or an embedder call returns. A scorer turns either one into an `unscorable` score, never a pass. `READ_MANIFEST_FAILURES` lists every failure `readManifest` returns.
 
+## Observability
+
+A test tool: `@arki/testing/otel` captures other packages' spans and metrics for tests and makes none of its own.
+
 ## Limits
 
 - **`withTransaction` only rolls back its own connection.** Code that opens a second connection or another pool commits for real. Rows it writes stay until you call `clearTables`.
@@ -104,13 +120,14 @@ These return `@arki/failure` failures instead of throwing:
 - **Without a seed, `faker` output differs on every run.** Call `faker.seed(1)` before a test that compares generated values.
 - **`assertTimestampRecent` allows 10 seconds by default.** A timestamp 11 seconds old fails unless you pass `withinSeconds`.
 - **MSW handlers reset after every test.** A handler added with `server.use(...)` in one test is gone in the next.
+- **`captureSpans` sees only tracers and meters taken after it starts.** A tracer cached at module load keeps its old provider. One capture at a time: the providers are process globals.
 
 ## Documentation
 
-- [Integration tester](docs/integration-tester.md): real Postgres and Redis, role callers, rollback, seeding.
 - [Factories and assertions](docs/factories-and-assertions.md): the full factory and assertion surface.
 - [Debug and performance](docs/debug-and-performance.md): logging, database dumps, timing and budgets.
 - [HTTP mocking with MSW](docs/msw.md): setup, patterns and why not to stub `fetch`.
+- [OpenTelemetry capture](docs/otel.md): `captureSpans`, parents, metrics, reset and dispose.
 - [Recipe: mock an HTTP API](docs/recipes/mock-http-api.md): one test, one command, expected output.
 - [Agent guide](docs/agent-guide.md): tasks and rules for agents.
 - [llms.txt](llms.txt): the import map.

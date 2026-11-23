@@ -11,7 +11,9 @@
  * - DEBUG=testing:* - All testing package logs
  */
 import { sql } from 'drizzle-orm';
+import { invariant } from '@arki/failure';
 import { getLogger } from '@arki/log';
+import { formatValue } from './format-value.js';
 /**
  * Runtime debug logger for main tester operations
  */
@@ -87,7 +89,8 @@ export function logQuery(query, params) {
     }
 }
 /**
- * Log the current state of an object
+ * Log the current state of an object, as indented JSON. Never throws on the state: a bigint prints as
+ * `12n`, and a value JSON cannot hold (a cycle) prints as its tag, such as `[object Object]`.
  *
  * @param label - Label for the state
  * @param state - Object to log
@@ -99,7 +102,7 @@ export function logQuery(query, params) {
  */
 export function logState(label, state) {
     if (debugEnabled) {
-        debugLogger(`[STATE] ${label}:`, JSON.stringify(state, null, 2));
+        debugLogger(`[STATE] ${label}:`, formatValue(state, 2));
     }
 }
 /**
@@ -143,7 +146,8 @@ export async function dumpDatabase(db) {
  *
  * @param db - Database instance
  * @param tableName - Name of the table to dump
- * @param limit - Maximum number of rows to display (default: 10)
+ * @param limit - Maximum number of rows to display (default: 10): a whole number of at least 0, or the
+ *   invariant failure `ARKI_FAILURE_E008` is thrown (`LIMIT NaN` was a SQL error)
  *
  * @example
  * ```typescript
@@ -151,6 +155,7 @@ export async function dumpDatabase(db) {
  * ```
  */
 export async function dumpTable(db, tableName, limit = 10) {
+    invariant(Number.isSafeInteger(limit) && limit >= 0, `dumpTable: limit must be a whole number of at least 0, got ${limit}.`);
     if (!debugEnabled)
         return;
     try {
@@ -209,7 +214,7 @@ export function logSection(label) {
     }
 }
 /**
- * Create a scoped debug context
+ * Create a scoped debug context. Its `state` writes the value like {@link logState}: never throws on it.
  *
  * @param context - Context label
  * @returns Debug functions scoped to the context
@@ -238,7 +243,7 @@ export function createDebugContext(context) {
         },
         state: (label, state) => {
             if (debugEnabled) {
-                debugLogger(`[STATE] [${context}] ${label}:`, JSON.stringify(state, null, 2));
+                debugLogger(`[STATE] [${context}] ${label}:`, formatValue(state, 2));
             }
         },
         section: (label) => {

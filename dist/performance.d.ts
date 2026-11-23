@@ -40,7 +40,8 @@ export type PerformanceResult = {
  *
  * @param label - Label for the operation
  * @param operation - Async operation to measure
- * @param options - Options including maxMs threshold
+ * @param options - Options including maxMs threshold (finite and at least 0, or the invariant failure
+ *   `ARKI_FAILURE_E008` is thrown before the operation runs)
  * @returns Performance result
  *
  * @throws Error if maxMs is specified and operation exceeds it
@@ -71,7 +72,8 @@ export declare function measurePerformance<T>(label: string, operation: () => Pr
  *
  * @param label - Label for the benchmark
  * @param query - Query function to benchmark
- * @param iterations - Number of iterations (default: 10)
+ * @param iterations - Number of iterations (default: 10; a whole number of at least 1, or the invariant
+ *   failure `ARKI_FAILURE_E008` is thrown before any run)
  * @returns Benchmark statistics
  *
  * @example
@@ -101,7 +103,8 @@ export declare function benchmarkQuery<T>(label: string, query: () => Promise<T>
  * Compare the performance of multiple operations
  *
  * @param operations - Object mapping labels to operation functions
- * @param iterations - Number of iterations per operation (default: 10)
+ * @param iterations - Number of iterations per operation (default: 10; a whole number of at least 1, or
+ *   the invariant failure `ARKI_FAILURE_E008` is thrown before any run; so is an empty `operations`)
  * @returns Comparison results sorted by average duration
  *
  * @example
@@ -127,7 +130,8 @@ export declare function comparePerformance<T extends Record<string, () => Promis
  *
  * @param label - Label for the operation
  * @param operation - Async operation to measure
- * @param maxMs - Maximum allowed duration in milliseconds
+ * @param maxMs - Maximum allowed duration in milliseconds (finite and at least 0, or the invariant failure
+ *   `ARKI_FAILURE_E008` is thrown before the operation runs)
  * @returns The result of the operation
  *
  * @throws Error if operation exceeds maxMs

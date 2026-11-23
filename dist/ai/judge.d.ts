@@ -5,8 +5,8 @@
  */
 import type { FailureOf } from '@arki/failure';
 import type { SchemaWithJson } from '@arki/schema';
-import type { Verdict } from './schemas.js';
-export type { Verdict } from './schemas.js';
+import type { Verdict } from './answers.js';
+export type { Verdict } from './answers.js';
 /**
  * Ollama did not answer: it is not running, the call timed out, or it answered with an error status.
  * A scorer turns it into an `unscorable` score, so a missing judge is never read as a pass or a zero.
@@ -57,11 +57,14 @@ export type JudgeOptions = {
     readonly target?: string;
     /** Let the judge be the model under test. It grades its own work more kindly; say so in the test. */
     readonly allowSameModelAsJudge?: boolean;
-    /** Default 7. */
+    /** Default 7. A safe integer, or `createJudge` throws the invariant failure `ARKI_FAILURE_E008`. */
     readonly seed?: number;
-    /** Tokens the judge may write per call. Default 1500. */
+    /** Tokens the judge may write per call. Default 1500. A whole number of at least 1, or the invariant failure. */
     readonly maxTokens?: number;
-    /** How long a chat or embed call may take before it is `OllamaUnavailable`. Default 120 000. */
+    /**
+     * How long a chat or embed call may take before it is `OllamaUnavailable`. Default 120 000. A whole number
+     * of milliseconds from 1 to 2^31 - 1, or the invariant failure.
+     */
     readonly timeoutMs?: number;
 };
 /**
@@ -73,7 +76,10 @@ export declare function createJudge(options: JudgeOptions): Promise<Judge>;
 export declare function createEmbedder(options: {
     readonly url?: string;
     readonly model: string;
-    /** How long an embed call may take before it is `OllamaUnavailable`. Default 120 000. */
+    /**
+     * How long an embed call may take before it is `OllamaUnavailable`. Default 120 000. A whole number of
+     * milliseconds from 1 to 2^31 - 1, or the invariant failure `ARKI_FAILURE_E008`.
+     */
     readonly timeoutMs?: number;
 }): Promise<Embedder>;
 /** Cosine similarity of two vectors: 1 for the same direction, 0 for unrelated. */

@@ -6,6 +6,13 @@
  */
 import type { SchemaInput, StandardSchemaV1 } from '@arki/schema';
 import type { Timestamp } from './timestamps.js';
+/** A page of results: what {@link assertPaginationValid} narrows a response to. */
+export type PaginatedResponse = {
+    items: unknown[];
+    total?: number | undefined;
+    nextCursor?: string | null | undefined;
+    hasMore?: boolean | undefined;
+};
 /**
  * Assert that a pagination response is valid
  *
@@ -27,12 +34,7 @@ export declare function assertPaginationValid(response: unknown, options?: {
     total?: number;
     hasMore?: boolean;
     itemSchema?: StandardSchemaV1;
-}): asserts response is {
-    items: unknown[];
-    total?: number;
-    nextCursor?: string | null;
-    hasMore?: boolean;
-};
+}): asserts response is PaginatedResponse;
 /**
  * Assert that a timestamp is recent (within specified seconds)
  *
@@ -40,7 +42,8 @@ export declare function assertPaginationValid(response: unknown, options?: {
  * from `@arki/date`. It is compared with now by its exact epoch.
  *
  * @param timestamp - Timestamp to check
- * @param options - Options including withinSeconds (default: 10)
+ * @param options - Options including withinSeconds (default: 10; a finite number of at least 0, or the
+ *   invariant failure `ARKI_FAILURE_E008` is thrown: `NaN` would let every timestamp pass)
  *
  * @example
  * ```typescript

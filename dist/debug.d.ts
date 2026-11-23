@@ -79,7 +79,8 @@ export declare function logDebug(message: string, ...args: unknown[]): void;
  */
 export declare function logQuery(query: string, params?: readonly unknown[]): void;
 /**
- * Log the current state of an object
+ * Log the current state of an object, as indented JSON. Never throws on the state: a bigint prints as
+ * `12n`, and a value JSON cannot hold (a cycle) prints as its tag, such as `[object Object]`.
  *
  * @param label - Label for the state
  * @param state - Object to log
@@ -111,7 +112,8 @@ export declare function dumpDatabase<TSchema extends AnyRelations>(db: NodePgDat
  *
  * @param db - Database instance
  * @param tableName - Name of the table to dump
- * @param limit - Maximum number of rows to display (default: 10)
+ * @param limit - Maximum number of rows to display (default: 10): a whole number of at least 0, or the
+ *   invariant failure `ARKI_FAILURE_E008` is thrown (`LIMIT NaN` was a SQL error)
  *
  * @example
  * ```typescript
@@ -150,7 +152,7 @@ export declare function timeOperation(label: string): {
  */
 export declare function logSection(label: string): void;
 /**
- * Create a scoped debug context
+ * Create a scoped debug context. Its `state` writes the value like {@link logState}: never throws on it.
  *
  * @param context - Context label
  * @returns Debug functions scoped to the context
